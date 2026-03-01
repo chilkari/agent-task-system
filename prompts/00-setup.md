@@ -12,36 +12,21 @@ exists, warn the user and ask if they want to reconfigure or abort.
 
 ## Step 1: Gather Configuration
 
-Ask the user the following questions. Provide the defaults shown and accept
-short answers.
+Ask the user the following questions in the order shown. Provide the defaults
+shown and accept short answers.
 
-1. **Project config directory**: Where should the task system project config
-   live?
-   - Default: `.task-system/`
-   - This is where project-specific overrides for coding guidelines, commit
-     format, project commands, and review profiles will be stored.
-
-2. **Tasks directory**: Where should task output be stored?
-   - Default: `tasks/`
-   - Each task will get its own subdirectory here with definition, plan,
-     implementation tracking, and review documents.
-
-3. **Artifact tracking**: Do you intend to commit task system artifacts
+1. **Artifact tracking**: Do you intend to commit task system artifacts
    (task files, config) to git?
    - Default: yes
    - If **yes**: The tasks directory and project config directory will be
-     tracked by git normally.
+     tracked by git normally. Proceed to Question 2.
    - If **no**: Artifacts will be stored in a git-excluded location and the
-     task system will never commit them. See the "Set Up Git-Excluded
-     Location" sub-flow below.
-
-4. **AI agent**: Which AI coding agent are you using?
-   - Options: pi, Claude (CLAUDE.md), Cursor (.cursorrules), other
-   - This determines the exact config lines to output at the end.
+     task system will never commit them. Run the "Set Up Git-Excluded
+     Location" sub-flow below **before** asking Questions 2 and 3.
 
 ### Set Up Git-Excluded Location
 
-Only run this sub-flow if the user answered **no** to Question 3.
+Only run this sub-flow if the user answered **no** to Question 1.
 
 1. Ask the user if they already have a git-excluded directory they would like
    to use for task system artifacts.
@@ -53,16 +38,36 @@ Only run this sub-flow if the user answered **no** to Question 3.
      `.git/info/exclude` rather than `.gitignore` so the exclusion stays
      local to this clone and does not affect other collaborators or appear in
      git history.) Create the file if it does not exist.
-   - Set the project config directory to `.excluded/.task-system/` and the
-     tasks directory to `.excluded/tasks/` (overriding whatever the user
-     answered for Questions 1 and 2, with their confirmation).
+   - Note the chosen excluded directory path (e.g., `.excluded/`) -- it will
+     be used as the default prefix for Questions 2 and 3.
 
-3. **If they already have one**, ask for the path and set the project config
-   directory and tasks directory to live inside it (e.g.,
-   `<their-path>/.task-system/` and `<their-path>/tasks/`). Verify that the
+3. **If they already have one**, ask for the path and verify that the
    directory is actually excluded from git (check `.git/info/exclude` and
    `.gitignore`). If it is not excluded, warn the user and offer to add it to
-   `.git/info/exclude`.
+   `.git/info/exclude`. Note this path as the default prefix for Questions 2
+   and 3.
+
+After this sub-flow completes, continue with Questions 2 and 3 below.
+
+---
+
+2. **Project config directory**: Where should the task system project config
+   live?
+   - Default (committed): `.task-system/`
+   - Default (excluded): `<excluded-dir>/.task-system/` (e.g.,
+     `.excluded/.task-system/`)
+   - This is where project-specific overrides for coding guidelines, commit
+     format, project commands, and review profiles will be stored.
+
+3. **Tasks directory**: Where should task output be stored?
+   - Default (committed): `tasks/`
+   - Default (excluded): `<excluded-dir>/tasks/` (e.g., `.excluded/tasks/`)
+   - Each task will get its own subdirectory here with definition, plan,
+     implementation tracking, and review documents.
+
+4. **AI agent**: Which AI coding agent are you using?
+   - Options: pi, Claude (CLAUDE.md), Cursor (.cursorrules), other
+   - This determines the exact config lines to output at the end.
 
 The paths chosen here will be used for all subsequent steps.
 
@@ -109,7 +114,7 @@ Create the following files in the project config directory:
 <committed or excluded>
 ```
 
-Set the `Artifact Tracking` value based on the user's answer to Question 3:
+Set the `Artifact Tracking` value based on the user's answer to Question 1:
 - `committed` if they chose to commit artifacts (the default).
 - `excluded` if they chose not to commit artifacts.
 

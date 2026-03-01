@@ -83,11 +83,12 @@ With the config lines in place, tell your AI agent:
 
 The agent will walk you through an interactive setup:
 
-1. **Confirm paths**: Where to put the project config directory and tasks
-   directory. Defaults are `.task-system/` and `tasks/`.
-2. **Artifact tracking**: Whether to commit task system artifacts to git. If
+1. **Artifact tracking**: Whether to commit task system artifacts to git. If
    you choose not to, the agent helps set up a `.excluded/` directory that
    git ignores. See [Git-Excluded Artifacts](#git-excluded-artifacts).
+2. **Confirm paths**: Where to put the project config directory and tasks
+   directory. Defaults are `.task-system/` and `tasks/` (or inside the
+   excluded directory if you opted out of artifact tracking).
 3. **Auto-detect conventions**: The agent inspects your repo for build tools,
    package managers, languages, test frameworks, and commit message patterns.
 4. **Create config files**: The agent creates starter files pre-filled with
