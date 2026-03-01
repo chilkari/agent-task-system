@@ -26,9 +26,45 @@ short answers.
    - Each task will get its own subdirectory here with definition, plan,
      implementation tracking, and review documents.
 
-3. **AI agent**: Which AI coding agent are you using?
+3. **Artifact tracking**: Do you intend to commit task system artifacts
+   (task files, config) to git?
+   - Default: yes
+   - If **yes**: The tasks directory and project config directory will be
+     tracked by git normally.
+   - If **no**: Artifacts will be stored in a git-excluded location and the
+     task system will never commit them. See the "Set Up Git-Excluded
+     Location" sub-flow below.
+
+4. **AI agent**: Which AI coding agent are you using?
    - Options: pi, Claude (CLAUDE.md), Cursor (.cursorrules), other
    - This determines the exact config lines to output at the end.
+
+### Set Up Git-Excluded Location
+
+Only run this sub-flow if the user answered **no** to Question 3.
+
+1. Ask the user if they already have a git-excluded directory they would like
+   to use for task system artifacts.
+
+2. **If they do not have one**, suggest creating `.excluded/` at the project
+   root:
+   - Create the `.excluded/` directory.
+   - Append `.excluded/` as a new line to `.git/info/exclude`. (Use
+     `.git/info/exclude` rather than `.gitignore` so the exclusion stays
+     local to this clone and does not affect other collaborators or appear in
+     git history.) Create the file if it does not exist.
+   - Set the project config directory to `.excluded/.task-system/` and the
+     tasks directory to `.excluded/tasks/` (overriding whatever the user
+     answered for Questions 1 and 2, with their confirmation).
+
+3. **If they already have one**, ask for the path and set the project config
+   directory and tasks directory to live inside it (e.g.,
+   `<their-path>/.task-system/` and `<their-path>/tasks/`). Verify that the
+   directory is actually excluded from git (check `.git/info/exclude` and
+   `.gitignore`). If it is not excluded, warn the user and offer to add it to
+   `.git/info/exclude`.
+
+The paths chosen here will be used for all subsequent steps.
 
 ## Step 2: Auto-Detect Project Conventions
 
@@ -67,7 +103,15 @@ Create the following files in the project config directory:
 
 ## Tasks Directory
 <tasks-directory-path>
+
+## Artifact Tracking
+<!-- "committed" or "excluded" -->
+<committed or excluded>
 ```
+
+Set the `Artifact Tracking` value based on the user's answer to Question 3:
+- `committed` if they chose to commit artifacts (the default).
+- `excluded` if they chose not to commit artifacts.
 
 ### `coding-guidelines.md`
 
@@ -151,38 +195,56 @@ detected:
 
 ## Step 4: Create Tasks Directory
 
-Create the tasks directory with a `.gitkeep` file so it is tracked by git
-even when empty.
+If artifact tracking is `committed`, create the tasks directory with a
+`.gitkeep` file so it is tracked by git even when empty.
+
+If artifact tracking is `excluded`, create the tasks directory without
+`.gitkeep` -- the directory is not tracked by git.
 
 ## Step 5: Output AI Config Lines
 
 Based on the agent the user specified, output the exact lines to add to their
-config file:
+config file. The config lines are the same regardless of agent:
 
-**For pi** (skill file or `.pi/skills/`):
 ```
 Follow the task system defined in <path-to-task-system>/skill.md
 Project config: <project-config-dir>/
 Tasks directory: <tasks-dir>/
 ```
 
-**For Claude** (`CLAUDE.md`):
-```
-Follow the task system defined in <path-to-task-system>/skill.md
-Project config: <project-config-dir>/
-Tasks directory: <tasks-dir>/
-```
+### When artifact tracking is `committed`
 
-**For Cursor** (`.cursorrules`):
-```
-Follow the task system defined in <path-to-task-system>/skill.md
-Project config: <project-config-dir>/
-Tasks directory: <tasks-dir>/
-```
+Tell the user to add the config lines to their project-local config file:
 
-**For other agents**: Provide the generic three-line block above and explain
-that it should be added to whatever custom instruction or system prompt
-mechanism the agent supports.
+- **Pi**: `.pi/skills/task/SKILL.md` (or a symlink to `skill.md`)
+- **Claude**: `CLAUDE.md` at the project root
+- **Cursor**: `.cursorrules` at the project root
+- **Other**: Whatever file the agent reads for project-level instructions
+
+### When artifact tracking is `excluded`
+
+Warn the user:
+
+> Since you chose not to commit task system artifacts, adding these config
+> lines to a project-local file (like `CLAUDE.md` or `.cursorrules`) would
+> leave task-system references visible in git. Consider adding them to your
+> **home directory** config file instead so no trace is left in the repo:
+>
+> - **Pi**: `~/.pi/skills/task/SKILL.md` (global skill)
+> - **Claude**: `~/.claude/CLAUDE.md` (global config)
+> - **Cursor**: Global settings or `~/.cursorrules`
+> - **Other**: Your agent's global/user-level config file
+>
+> If you prefer to use the project-local file anyway, that is fine -- just be
+> aware those config lines will be visible in git.
+
+Then output the config lines with the actual paths (which will point into the
+excluded directory, e.g., `.excluded/.task-system/` and `.excluded/tasks/`).
+
+Note: when placing config lines in a home-directory file, the paths must be
+either absolute or relative to where the agent resolves them. Confirm with
+the user that the paths will resolve correctly from their chosen config
+location.
 
 ## Step 6: Review
 

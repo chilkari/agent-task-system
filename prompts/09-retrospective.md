@@ -215,8 +215,13 @@ No configuration changes or process notes from this task.
 
 ### Step 7: Final Commit
 
-If any config files were modified, commit them with an appropriate message
-(e.g., `chore: update task system config from <task-slug> retrospective`).
+Check the `artifact-tracking` setting in the project config's `config.md`.
+
+- If `committed`: If any config files were modified, commit them with an
+  appropriate message (e.g.,
+  `chore: update task system config from <task-slug> retrospective`).
+- If `excluded`: Skip the commit. Config files are in the excluded location
+  and are never committed to git. The changes are already written to disk.
 
 ### Update State
 

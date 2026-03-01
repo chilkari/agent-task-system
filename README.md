@@ -85,9 +85,12 @@ The agent will walk you through an interactive setup:
 
 1. **Confirm paths**: Where to put the project config directory and tasks
    directory. Defaults are `.task-system/` and `tasks/`.
-2. **Auto-detect conventions**: The agent inspects your repo for build tools,
+2. **Artifact tracking**: Whether to commit task system artifacts to git. If
+   you choose not to, the agent helps set up a `.excluded/` directory that
+   git ignores. See [Git-Excluded Artifacts](#git-excluded-artifacts).
+3. **Auto-detect conventions**: The agent inspects your repo for build tools,
    package managers, languages, test frameworks, and commit message patterns.
-3. **Create config files**: The agent creates starter files pre-filled with
+4. **Create config files**: The agent creates starter files pre-filled with
    detected values:
    - `coding-guidelines.md` -- project-specific coding rules
    - `commit-message-format.md` -- your commit message convention
@@ -189,6 +192,10 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
+**Excluded mode**: If using git-excluded artifacts, add the skill to your
+global config at `~/.pi/skills/task/SKILL.md` instead of the project-local
+`.pi/skills/` directory. This keeps all task system references out of the repo.
+
 ### Claude (CLAUDE.md)
 
 Add to your `CLAUDE.md` file at the project root:
@@ -201,6 +208,10 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
+**Excluded mode**: If using git-excluded artifacts, add these lines to
+`~/.claude/CLAUDE.md` instead so no task system references appear in the repo.
+Adjust paths to be absolute or relative to your home directory as needed.
+
 ### Cursor (.cursorrules)
 
 Add to your `.cursorrules` file:
@@ -212,6 +223,10 @@ Follow the task system defined in vendor/task-system/skill.md
 Project config: .task-system/
 Tasks directory: tasks/
 ```
+
+**Excluded mode**: If using git-excluded artifacts, add these lines to your
+global Cursor settings or `~/.cursorrules` instead so no task system references
+appear in the repo.
 
 ### Other Agents
 
@@ -228,6 +243,10 @@ Tasks directory: <tasks-dir>/
 The `skill.md` file contains all the behavioral instructions. The agent reads
 it and follows the process. The prompts in `prompts/` are referenced by
 `skill.md` and contain detailed instructions for each phase.
+
+**Excluded mode**: If using git-excluded artifacts, use your agent's
+global/user-level config file instead of the project-local one so no task
+system references appear in the repo.
 
 ---
 
@@ -246,7 +265,20 @@ Project-level settings:
 
 ## Tasks Directory
 tasks/
+
+## Artifact Tracking
+<!-- "committed" or "excluded" -->
+committed
 ```
+
+The `artifact-tracking` field controls whether the task system commits its own
+files to git:
+
+- **`committed`** (default): Task artifacts and config files are tracked by
+  git and committed normally.
+- **`excluded`**: Task artifacts and config files live in a git-excluded
+  location and are never committed. Project source code commits proceed
+  normally. See [Git-Excluded Artifacts](#git-excluded-artifacts) for details.
 
 ### `coding-guidelines.md`
 
@@ -591,6 +623,61 @@ Use "task list" to see all tasks and their current phase.
 
 ---
 
+## Git-Excluded Artifacts
+
+By default, the task system commits its artifacts (task files, config files)
+to git alongside your project code. However, some users prefer to keep task
+system artifacts out of git entirely -- they are personal workflow files, not
+project deliverables.
+
+### How It Works
+
+During setup, when asked "Do you intend to commit task system artifacts to
+git?", answer **no**. The agent will:
+
+1. Create a `.excluded/` directory at the project root (or use one you already
+   have).
+2. Add `.excluded/` to `.git/info/exclude` so git ignores it. This uses
+   `.git/info/exclude` rather than `.gitignore` because the exclusion is local
+   to your clone -- it does not affect other collaborators and does not appear
+   in git history.
+3. Place both the project config directory and tasks directory inside
+   `.excluded/` (e.g., `.excluded/.task-system/` and `.excluded/tasks/`).
+4. Set `artifact-tracking` to `excluded` in `config.md`.
+
+### What Changes
+
+When artifact tracking is `excluded`:
+
+- **Project code commits proceed normally.** Implementation steps, review
+  fixes, and polish changes to your source code are committed as usual.
+- **Task artifacts are never committed.** Definition files, plans, review
+  documents, implementation trackers, and all other task system markdown files
+  are written to disk in the excluded directory but never staged or committed.
+- **Config file changes are never committed.** Updates to coding guidelines,
+  commit format, project commands, and review profiles during retrospective
+  are written to disk but not committed.
+
+### Agent Config Placement
+
+The AI agent config lines (the three lines referencing `skill.md`, the project
+config directory, and the tasks directory) need to live somewhere the agent
+reads them. When using excluded mode, placing these in a project-local file
+like `CLAUDE.md` or `.cursorrules` would leave task-system references visible
+in git.
+
+Instead, consider adding the config lines to your **home directory** config:
+
+- **Pi**: `~/.pi/skills/task/SKILL.md` (global skill)
+- **Claude**: `~/.claude/CLAUDE.md` (global config)
+- **Cursor**: Global settings or `~/.cursorrules`
+
+This way, no trace of the task system appears in the repository at all. If you
+prefer the project-local file anyway, that works -- just be aware the config
+lines will be visible in git.
+
+---
+
 ## Codebase Knowledge Base
 
 As you complete tasks, the system builds a cumulative knowledge base about your
@@ -786,6 +873,14 @@ proceed" or similar.
 
 Both the project config directory and tasks directory paths are configured
 per-repo in your AI agent config. Each repo can have its own paths.
+
+### I don't want task artifacts in my git history
+
+During setup, answer "no" when asked whether to commit task system artifacts.
+The agent will help you configure a `.excluded/` directory (added to
+`.git/info/exclude`) where all task files live. Project code commits proceed
+normally -- only the task system's own files are excluded. See
+[Git-Excluded Artifacts](#git-excluded-artifacts) for full details.
 
 ### Can I use this without an AI agent?
 

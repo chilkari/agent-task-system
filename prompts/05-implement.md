@@ -27,9 +27,12 @@ If `05-implementation.md` already exists, read it to determine:
 
 Before making any code changes, verify the codebase is in a clean state:
 
-1. **Git working tree**: Run `git status`. If there are uncommitted changes,
-   stop and ask the user to commit or stash them. Do not proceed with a dirty
-   working tree.
+1. **Git working tree**: Run `git status`. If there are uncommitted changes
+   to project source code, stop and ask the user to commit or stash them. Do
+   not proceed with a dirty working tree. Ignore any untracked or modified
+   files inside the tasks directory and project config directory -- these are
+   task system artifacts and are expected to have uncommitted changes during
+   task work.
 2. **Existing tests**: Run the test command from project commands. If tests
    fail, stop and report. These are pre-existing failures that must be resolved
    before implementation begins -- do not attempt to fix them as part of this

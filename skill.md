@@ -14,6 +14,19 @@ Two paths are configured in the project's AI agent config:
 
 If these are not configured, ask the user to run setup first.
 
+The project's `config.md` (inside the project config directory) may include
+an `artifact-tracking` field set to `committed` or `excluded`:
+
+- **`committed`** (default): Task artifacts and project config are tracked by
+  git and committed normally during the workflow.
+- **`excluded`**: Task artifacts and project config live in a git-excluded
+  location (e.g., `.excluded/`). Phases must never stage or commit files from
+  the tasks directory or project config directory. Project source code commits
+  during implementation, review response, and polish proceed normally -- only
+  the task system's own files are excluded.
+
+If the field is absent, treat it as `committed`.
+
 ## Commands
 
 Respond to the following user requests:

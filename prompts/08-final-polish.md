@@ -153,8 +153,14 @@ suggestions that were rejected and why.>
 
 ### Step 10: Final Commit
 
-Commit all polish changes with an appropriate commit message (e.g.,
-`chore: final polish for <task-slug>`).
+Check the `artifact-tracking` setting in the project config's `config.md`.
+
+- If `committed`: Commit all polish changes with an appropriate commit message
+  (e.g., `chore: final polish for <task-slug>`).
+- If `excluded`: Commit only project code polish changes (lint fixes, format
+  fixes, etc.). Do not stage or commit any files in the tasks directory or
+  project config directory. If the only changes were to task artifacts (the
+  polish document, summary, etc.), skip the commit entirely.
 
 ### Update State
 
