@@ -17,6 +17,10 @@ Read the following files from the task directory:
 - `09-summary.md` -- task summary.
 - `task-state.md` -- confirm we are in the retrospective phase.
 
+Also read:
+- `.codebase-knowledge.md` from the tasks directory (if it exists) -- the
+  cumulative codebase knowledge base.
+
 Also read the current project config files:
 - `coding-guidelines.md` from the project config directory.
 - `commit-message-format.md` from the project config directory.
@@ -75,6 +79,14 @@ for these specific signals:
 - Task-specific coding guidelines that were added during planning -- evaluate
   whether these should be permanent project-level rules.
 
+**From research and implementation (for codebase knowledge base)**:
+- Architectural knowledge or module understanding gained during this task that
+  is not yet in `.codebase-knowledge.md` -- especially if research was skipped
+  (small task) but the agent still learned things about the codebase during
+  planning or implementation.
+- Corrections to existing knowledge base entries discovered during
+  implementation (e.g., a module's API changed, a pattern is no longer used).
+
 ### Step 3: Present Suggestions
 
 Organize your suggestions by config file. For each suggestion:
@@ -102,6 +114,15 @@ Present them grouped:
 - "The commits during this task used [observed pattern] which differs from
   the configured format. Suggested update: '[new format]'"
 
+**Codebase knowledge base** (`.codebase-knowledge.md` in tasks directory):
+- "During this task I learned about [module/pattern/convention] that isn't in
+  the knowledge base. Adding it would give future tasks a head start."
+- "The knowledge base entry for [module] appears to be outdated -- [what
+  changed]. Suggested update: '[correction]'"
+- This is especially valuable for small tasks that skipped the research phase
+  (which normally updates the knowledge base) but where the agent still
+  learned things about the codebase.
+
 If you have no suggestions for a category, skip it rather than saying "no
 suggestions." Only present categories where you have something concrete.
 
@@ -127,7 +148,8 @@ Listen to the user's observations. For each one:
 
 For each suggestion the user accepts (whether agent-suggested or user-raised):
 
-1. Edit the actual config file in the project config directory.
+1. Edit the actual config file in the project config directory (or the
+   knowledge base in the tasks directory).
 2. Show the user what was changed.
 
 For review profile additions where the project config directory does not yet
@@ -142,6 +164,11 @@ profile.
 
 - <new check>
 ```
+
+For codebase knowledge base updates, follow the same format and conventions
+described in `prompts/02-research.md` § "Update Codebase Knowledge Base". If
+the knowledge base does not exist yet, create it. Update the "Last updated"
+line at the top of the file.
 
 ### Step 6: Write Retrospective Document
 
@@ -159,6 +186,12 @@ Write `10-retrospective.md` in the task directory:
 - Updated: "<what changed>" (prompted by <source reference>)
 
 <!-- Repeat for each config file that was changed. Omit files with no changes. -->
+
+## Knowledge Base Updates
+- Added: "<module/pattern/convention>" (learned during <phase>)
+- Updated: "<entry>" -- <what changed>
+
+<!-- Omit this section if no knowledge base changes were made. -->
 
 ## Config Changes Declined
 - <suggestion>: <user's reason for declining>

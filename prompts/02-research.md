@@ -9,19 +9,46 @@ Read the following files from the task directory:
 - `01-definition.md` -- understand what the task is and its scope.
 - `task-state.md` -- confirm we are in the research phase.
 
+Also read:
+- `.codebase-knowledge.md` from the tasks directory (if it exists). This is a
+  cumulative knowledge base built from previous tasks' research. Use it as a
+  head start -- it tells you what is already known about the codebase's
+  architecture, patterns, modules, and conventions.
+
 ## Instructions
+
+### Review Existing Knowledge
+
+If `.codebase-knowledge.md` exists, read it before proposing your research
+plan. Identify:
+- What is already documented that is relevant to this task -- you can rely on
+  this instead of re-exploring it (but spot-check anything critical).
+- What gaps exist -- areas relevant to this task that the knowledge base does
+  not cover or covers only superficially.
+- What might be stale -- entries that were last verified a long time ago or
+  that seem inconsistent with what you can see in the file tree.
+
+When presenting your research plan to the user, note what you already know
+from the knowledge base and what you still need to investigate. This makes the
+research scope transparent and shows the time savings.
 
 ### Propose a Research Plan
 
 Before exploring, tell the user what you plan to investigate. Structure your
 proposal as:
 
-1. **Files and modules to examine** -- specific files, directories, or patterns
-   you plan to look at and why.
-2. **Questions to answer** -- what you need to understand to create a good plan
+1. **What the knowledge base already covers** -- relevant sections from
+   `.codebase-knowledge.md` that apply to this task. Note any entries you plan
+   to spot-check because they are critical to the task or may be stale. If no
+   knowledge base exists, state that and note that all areas will need fresh
+   exploration.
+2. **Files and modules to examine** -- specific files, directories, or patterns
+   you plan to look at and why. Focus on areas **not** covered by the knowledge
+   base.
+3. **Questions to answer** -- what you need to understand to create a good plan
    (e.g., "How does the auth middleware chain work?", "What patterns do existing
    tests follow?").
-3. **Scope of exploration** -- based on complexity:
+4. **Scope of exploration** -- based on complexity:
    - **Medium**: Targeted. Focus on the specific files and modules that will be
      touched by this task.
    - **Large**: Broad. Map out architecture, trace data flows, examine testing
@@ -108,6 +135,74 @@ Present the research findings to the user. Ask:
 - If a split was recommended, do they agree with the proposed boundaries?
 
 Revise until the user is satisfied.
+
+### Update Codebase Knowledge Base
+
+After the user approves the research, update the codebase knowledge base
+(`.codebase-knowledge.md` in the tasks directory) with durable, reusable
+findings from this research. This step builds cumulative knowledge that saves
+time on future tasks.
+
+**If the knowledge base does not exist yet**, create it with the findings from
+this task:
+
+```markdown
+# Codebase Knowledge
+
+Last updated: <date> (after task: <task-slug>)
+
+## Architecture Overview
+<High-level module map, major boundaries, data flow patterns discovered
+during this research.>
+
+## Key Modules
+### <module-name>
+- **Location**: <path>
+- **Purpose**: <what it does>
+- **Key patterns**: <how it works internally>
+- **Public API**: <main exports/interfaces>
+- **Last verified**: <date>
+
+## Conventions & Patterns
+<Naming conventions, error handling patterns, logging approach, dependency
+injection style, etc. -- things discovered during research that are not
+coding guidelines but are important context for understanding the codebase.>
+
+## Testing Patterns
+<How tests are structured, what frameworks are used, test file naming,
+fixture patterns, mock strategies.>
+
+## External Dependencies
+<Key libraries, their versions, why they are used, links to relevant docs.>
+
+## Infrastructure & Configuration
+<Build pipeline, deployment, environment setup, config file formats.>
+```
+
+**If the knowledge base already exists**, propose updates:
+
+1. **New entries** -- modules, patterns, or architectural knowledge discovered
+   during this research that are not yet in the knowledge base.
+2. **Corrections** -- entries that were found to be stale or inaccurate during
+   spot-checking.
+3. **Enrichments** -- existing entries that can be expanded with additional
+   detail from this research.
+
+Present the proposed updates to the user: "I'd like to update the codebase
+knowledge base with the following findings from this research: [list]. This
+will help future tasks start faster. OK to proceed?"
+
+Apply approved updates. Update the "Last updated" line at the top of the file.
+For module entries, update the "Last verified" date on any entries that were
+spot-checked and confirmed accurate, even if no content changed.
+
+**What to include**: Architecture, module descriptions, stable patterns,
+conventions, key dependencies, testing approaches -- things that are properties
+of the codebase itself and change slowly.
+
+**What to exclude**: Task-specific risk assessments, task-specific file
+relevance, anything that only matters in the context of the current task. These
+belong in `02-research.md`, not the shared knowledge base.
 
 ### Update State
 

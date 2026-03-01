@@ -106,10 +106,27 @@ task-system-design-plan.md  # Detailed design plan used to build this system
 2. No other changes needed — the system auto-detects languages and loads
    matching profiles.
 
+## Codebase Knowledge Base
+
+The system maintains a cumulative knowledge base at `.codebase-knowledge.md`
+in the consuming project's tasks directory. This is created and updated during
+Phase 2 (Research) and Phase 9 (Retrospective) with durable architectural
+knowledge — module descriptions, conventions, patterns, dependencies.
+
+Phase 2 reads this file at the start to skip re-exploring known areas, then
+updates it at the end with new findings. This means early tasks do full
+research, but later tasks benefit from accumulated context and can focus
+research on task-specific areas.
+
+The knowledge base is a head start, not an authority. The agent spot-checks
+entries it plans to rely on and corrects stale information.
+
 ## Not in This Repo
 
 - **Task output** — task artifacts (`01-definition.md`, `task-state.md`, etc.)
   are written to the consuming project, not here.
+- **Codebase knowledge base** — `.codebase-knowledge.md` lives in the
+  consuming project's tasks directory, not here.
 - **Project-specific config** — per-project overrides for coding guidelines,
   commands, and review profiles live in the consuming project's config
   directory (typically `.task-system/`).

@@ -416,11 +416,15 @@ The agent asks you to describe the task, then drafts a definition with:
 
 ### Phase 2: Research
 
-**Reads**: `01-definition.md`
-**Writes**: `02-research.md`, `task-state.md`
-**User interaction**: Light -- approve the research plan, review findings
+**Reads**: `01-definition.md`, `.codebase-knowledge.md` (if exists)
+**Writes**: `02-research.md`, `.codebase-knowledge.md`, `task-state.md`
+**User interaction**: Light -- approve the research plan, review findings,
+approve knowledge base updates
 
-The agent proposes what it will explore, you confirm, it explores and reports.
+The agent reads the codebase knowledge base (if it exists from previous tasks)
+to understand what is already known, then proposes a focused research plan
+targeting gaps. After the user approves the research findings, the agent
+proposes updates to the knowledge base with durable, reusable discoveries.
 Skipped for small tasks.
 
 **Tips**:
@@ -428,6 +432,8 @@ Skipped for small tasks.
   nothing is missed.
 - If the agent's research reveals the task should be split, seriously consider
   it. Smaller tasks produce better results.
+- Review the knowledge base updates the agent proposes. Bad entries will
+  affect every future task, so accuracy matters more than completeness.
 
 ### Phase 3: Plan
 
@@ -582,6 +588,86 @@ The agent summarizes where things stand before continuing.
 ### Multiple Tasks
 If you have several tasks in progress, the agent will ask which one to resume.
 Use "task list" to see all tasks and their current phase.
+
+---
+
+## Codebase Knowledge Base
+
+As you complete tasks, the system builds a cumulative knowledge base about your
+codebase at `.codebase-knowledge.md` in the tasks directory. This captures
+architecture, module descriptions, conventions, testing patterns, and key
+dependencies -- the expensive-to-discover context that stays relevant across
+tasks.
+
+### How It Works
+
+- **Created during the first medium/large task** that goes through research
+  (Phase 2). The agent extracts reusable architectural findings and proposes
+  them for the knowledge base. You approve what goes in.
+- **Updated after subsequent research phases** with new discoveries,
+  corrections to stale entries, and enrichments to existing entries.
+- **Also updated during retrospective (Phase 9)** -- especially valuable for
+  small tasks that skip research but where the agent still learned things
+  about the codebase during planning or implementation.
+- **Read at the start of every research phase** to skip re-exploring known
+  areas and focus on what is new or task-specific.
+
+### What It Contains
+
+```
+<tasks-dir>/
+  .codebase-knowledge.md    # Cumulative knowledge base
+  add-verbose-flag/         # Individual task directories
+  refactor-auth-module/
+  ...
+```
+
+The knowledge base covers:
+- **Architecture overview** -- high-level module map and data flow
+- **Key modules** -- location, purpose, patterns, public API, last verified date
+- **Conventions & patterns** -- naming, error handling, logging, etc.
+- **Testing patterns** -- frameworks, file naming, fixture/mock strategies
+- **External dependencies** -- key libraries with versions and doc links
+- **Infrastructure** -- build pipeline, deployment, config formats
+
+### Staleness
+
+Each module entry includes a "Last verified" date. Entries are spot-checked
+when the agent plans to rely on them for a new task. If something has changed,
+the entry is corrected. The knowledge base is a head start, not a substitute
+for looking at the code -- the agent still verifies anything critical.
+
+### Example
+
+After three tasks, the knowledge base might look like:
+
+```markdown
+# Codebase Knowledge
+
+Last updated: 2026-02-28 (after task: refactor-auth-module)
+
+## Architecture Overview
+Express.js monolith with three main layers: routes, services, repositories.
+All HTTP handling in routes/, business logic in services/, database access
+in repositories/. Services never import from routes. Repositories use the
+query builder, never raw SQL.
+
+## Key Modules
+### Auth Middleware
+- **Location**: src/middleware/auth.ts
+- **Purpose**: JWT validation and role-based access control
+- **Key patterns**: Chain of responsibility, each middleware calls next()
+- **Public API**: requireAuth(), requireRole(role)
+- **Last verified**: 2026-02-28
+
+### Event Bus
+- **Location**: src/events/
+- **Purpose**: In-process pub/sub for decoupling services
+- **Key patterns**: Typed event definitions in events/types.ts
+- **Public API**: emit(event), on(eventType, handler)
+- **Last verified**: 2026-02-15
+...
+```
 
 ---
 

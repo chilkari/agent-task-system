@@ -90,6 +90,15 @@ Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 -->
 
 When a phase needs to read a file, resolve it in this order:
 
+### Codebase Knowledge Base
+1. If `.codebase-knowledge.md` exists in the tasks directory, read it.
+2. This file is cumulative -- it is created and updated during Phase 2
+   (Research) and may also be updated during Phase 9 (Retrospective).
+3. It provides architectural context, module descriptions, conventions, and
+   patterns learned from previous tasks.
+4. Treat it as a head start, not a substitute for verifying critical details
+   in the actual code.
+
 ### Coding Guidelines
 1. Read `defaults/coding-guidelines.md` from the task system.
 2. If `coding-guidelines.md` exists in the project config directory, append
