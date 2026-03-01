@@ -37,6 +37,7 @@ with a full audit trail of decisions made along the way.
 | **6. Code Review** | Critical review of all changes | Light: review findings |
 | **7. Review Response** | Fix critical/important issues, discuss suggestions | Interactive: approve fixes, decide on suggestions |
 | **8. Final Polish** | Lint, format, remove AI artifacts, final tests | None: fully automated |
+| **9. Retrospective** | Review process, tune project config for future tasks | Interactive: accept/decline suggestions, share observations |
 
 ## Quick Start
 
@@ -129,7 +130,12 @@ Agent:  "I found 1 important issue and 2 suggestions..."
 Agent:  [Fixes the important issue, you accept 1 suggestion, reject 1]
 Agent:  [Re-reviews, comes back clean]
 Agent:  [Runs final polish: lint, format, AI artifact check]
-Agent:  [Writes 09-summary.md -- task complete]
+Agent:  [Writes 09-summary.md]
+Agent:  "Would you like to do a quick retrospective?"
+You:    "Sure"
+Agent:  "During code review I flagged X twice. Want to add a coding guideline?"
+You:    "Yes, add that"
+Agent:  [Updates .task-system/coding-guidelines.md, writes 10-retrospective.md]
 ```
 
 The task directory now contains the full record:
@@ -144,6 +150,7 @@ tasks/add-verbose-flag/
   06-code-review-r2.md  -- second review (clean)
   08-final-polish.md    -- cleanup notes
   09-summary.md         -- final summary
+  10-retrospective.md   -- config changes and process notes (if retrospective was done)
   task-state.md         -- phase tracking (complete)
 ```
 
@@ -522,6 +529,31 @@ and writes the final summary.
 - Review `09-summary.md` after completion. It gives a clean overview of what
   was delivered and the decisions made along the way.
 
+### Phase 9: Retrospective
+
+**Reads**: All task artifacts, current project config files
+**Writes**: `10-retrospective.md`, project config files (if changes accepted),
+`task-state.md`
+**User interaction**: Interactive -- accept/decline suggestions, share
+observations. Optional -- user can skip entirely.
+
+The agent mines the task artifacts for signals about what could be improved in
+the project configuration: recurring code review findings that should become
+coding guidelines, missing review profile checks, incorrect project commands,
+or conventions the agent had to learn mid-task. It presents concrete
+suggestions, the user accepts or declines each one, and approved changes are
+applied directly to the `.task-system/` config files. The user can also share
+process-level observations about the workflow itself.
+
+**Tips**:
+- This phase is optional. If a task went smoothly and nothing needs tuning,
+  decline and move on.
+- Pay attention to agent suggestions drawn from code review findings --
+  these are patterns that will recur and are worth codifying.
+- Process-level observations (about prompts or phase flow) are captured as
+  notes. If you maintain a fork of the task system, review these periodically
+  to inform prompt changes.
+
 ---
 
 ## Cross-Session Workflow
@@ -617,6 +649,7 @@ A completed task directory contains:
 | `06-code-review-rN.md` | Phase 7 | Subsequent review rounds (r2, r3, etc.) |
 | `08-final-polish.md` | Phase 8 | Cleanup notes, lint/format results, test results |
 | `09-summary.md` | Phase 8 | Final summary of what was delivered |
+| `10-retrospective.md` | Phase 9 | Config changes made and process notes (optional) |
 | `task-state.md` | Phase 1 | Phase tracking, timestamps, complexity, languages |
 
 ---

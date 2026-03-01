@@ -161,15 +161,12 @@ Commit all polish changes with an appropriate commit message (e.g.,
 Update `task-state.md`:
 
 ```markdown
-- **Current Phase**: complete
+- **Current Phase**: 9-retrospective
 - **Phase History**:
   - ...previous entries...
   - Phase 8 (Final Polish): completed <timestamp>
-  - Task complete: <timestamp>
 ```
 
-## Task Complete
+## Next Steps
 
-The task is finished. The task directory contains the full record of the
-process: definition, research, plan, review notes, implementation tracking,
-code reviews, polish notes, and the final summary.
+Proceed to Phase 9 (Retrospective).

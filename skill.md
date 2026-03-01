@@ -51,10 +51,10 @@ The phases execute in this order. Each phase has a prompt template in the
 `prompts/` directory that contains full instructions.
 
 ```
-Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 --> Phase 6 --> Phase 7 --> Phase 8
-                     Define      Research    Plan        Review      Implement   Code        Review      Final
-                                 (skip if                (loop)                  Review      Response    Polish
-                                  small)                                                    (loop to 6)
+Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 --> Phase 6 --> Phase 7 --> Phase 8 --> Phase 9
+                     Define      Research    Plan        Review      Implement   Code        Review      Final       Retro-
+                                 (skip if                (loop)                  Review      Response    Polish      spective
+                                  small)                                                    (loop to 6)             (optional)
 ```
 
 ### Phase Routing
@@ -70,6 +70,7 @@ Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 -->
 | 6. Code Review | `prompts/06-code-review.md` | After Phase 5 (or Phase 7) |
 | 7. Review Response | `prompts/07-review-response.md` | After Phase 6 |
 | 8. Final Polish | `prompts/08-final-polish.md` | After Phase 7 (review clean) |
+| 9. Retrospective | `prompts/09-retrospective.md` | After Phase 8 (optional) |
 
 ### Phase Transitions
 
@@ -81,7 +82,9 @@ Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 -->
 - After **Phase 6**: Go to Phase 7.
 - After **Phase 7**: Loop back to Phase 6 for re-review. When review is clean
   and user is satisfied, go to Phase 8.
-- After **Phase 8**: Task is complete.
+- After **Phase 8**: Go to Phase 9.
+- After **Phase 9**: Task is complete. If user declines the retrospective,
+  task is also complete.
 
 ## File Resolution
 
