@@ -20,6 +20,10 @@ skill.md                    # Entry point — the AI skill definition. Agents re
                             # this to understand commands, phase flow, file
                             # resolution, and cross-session behavior.
 
+templates/SKILL.md          # Template for installing the skill in an agent's
+                            # config directory. Users copy this and update the
+                            # path to point to their clone.
+
 prompts/                    # Phase-specific prompt templates (the core logic)
   00-setup.md               # One-time project setup instructions
   01-definition.md          # Phase 1: Task definition
@@ -30,7 +34,7 @@ prompts/                    # Phase-specific prompt templates (the core logic)
   06-code-review.md         # Phase 6: Code review of changes
   07-review-response.md     # Phase 7: Address review findings
   08-final-polish.md        # Phase 8: Lint, format, cleanup, summary
-  09-retrospective.md      # Phase 9: Optional retrospective & config tuning
+  09-retrospective.md       # Phase 9: Optional retrospective & config tuning
 
 defaults/                   # Baseline configuration (applied to all projects)
   coding-guidelines.md      # Default coding rules (always appended)
@@ -40,6 +44,15 @@ defaults/                   # Baseline configuration (applied to all projects)
 review-profiles/            # Language-specific code review checklists
   typescript.md             # TypeScript review checklist
   bash.md                   # Bash review checklist
+
+docs/                       # Detailed documentation
+  phases.md                 # Phase reference with tips
+  configuration.md          # Project config files and merge behavior
+  git-excluded-artifacts.md # Keeping artifacts out of git
+  knowledge-base.md         # Codebase knowledge base
+  customization.md          # Modifying defaults, profiles, prompts
+  advanced-installation.md  # Repo-specific and alternative installation
+  troubleshooting.md        # FAQ and troubleshooting
 
 task-system-design.md       # Original design brief / requirements document
 task-system-design-plan.md  # Detailed design plan used to build this system
@@ -97,7 +110,7 @@ task-system-design-plan.md  # Detailed design plan used to build this system
 ### Adding a new phase
 1. Create `prompts/NN-phase-name.md` with full instructions.
 2. Update `skill.md` phase routing table and transition rules.
-3. Update `README.md` phase table and reference sections.
+3. Update `README.md` phase table and `docs/phases.md` reference.
 4. Verify no existing phase's transition logic is broken.
 
 ### Adding a new review profile
