@@ -153,10 +153,22 @@ tasks/add-verbose-flag/
 
 ### Pi
 
-Add a skill file or include in your `.pi/skills/` directory:
+Add a _directory_ named for your skill (i.e. "task") inside of your
+`.pi/skills/` directory and then either copy or symlink the skill.md file here
+to a file named `SKILL.md` in that directory.
 
 ```
-Follow the task system defined in <path-to-task-system>/skill.md
+cd ~/.pi/skills/task/
+ln -s /home/jonathon/dev/agent-task-system/skill.md SKILL.md
+```
+
+Alternatively, and for installation into a specific repo, add the same to
+`[repo-root]/.pi/skills/task/SKILL.md` and modify it to something like this,
+which allows you to specify where in the repo the project-specific config
+directory and tasks directory should be.
+
+```
+Follow the task system defined in /home/jonathon/dev/agent-task-system/skill.md
 Project config: <project-config-dir>/
 Tasks directory: <tasks-dir>/
 ```
