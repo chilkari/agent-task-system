@@ -6,13 +6,32 @@ work on a task.
 
 ## Configuration
 
-Two paths are configured in the project's AI agent config:
+Two paths are needed to operate:
 
 - **Project config**: The directory containing project-specific overrides
   (coding guidelines, commit format, project commands, review profiles).
 - **Tasks directory**: The directory where task output is stored.
 
-If these are not configured, ask the user to run setup first.
+### Path Resolution
+
+Resolve these paths using the following priority order:
+
+1. **Agent config** — If the paths are specified in the agent's config file
+   (e.g., `CLAUDE.md`, `.cursorrules`, `SKILL.md`), use them.
+2. **Repo-local pointer file** — If `.git/info/task-system` exists in the
+   current repository, read it. This file is written during setup and contains
+   the paths for this specific repo. It is never committed (it lives inside
+   `.git/`). Format:
+   ```
+   project-config: <path>
+   tasks-directory: <path>
+   ```
+3. **Neither found** — Ask the user to run setup first.
+
+This resolution order means a global skill file (e.g.,
+`~/.pi/skills/task/SKILL.md`) can reference `skill.md` without specifying
+per-repo paths. The paths are discovered automatically from
+`.git/info/task-system` when the agent operates in a specific repo.
 
 The project's `config.md` (inside the project config directory) may include
 an `artifact-tracking` field set to `committed` or `excluded`:

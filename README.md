@@ -73,7 +73,10 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
-Replace the paths with your actual locations.
+Replace the paths with your actual locations. If you plan to use git-excluded
+artifacts, you only need the first line (the skill reference) -- per-repo
+paths will be stored in `.git/info/task-system` during setup and discovered
+automatically. See [Git-Excluded Artifacts](#git-excluded-artifacts).
 
 ### 3. Run the Interactive Setup
 
@@ -173,10 +176,10 @@ cd ~/.pi/skills/task/
 ln -s /home/jonathon/dev/agent-task-system/skill.md SKILL.md
 ```
 
-Alternatively, and for installation into a specific repo, add the same to
-`[repo-root]/.pi/skills/task/SKILL.md` and modify it to something like this,
-which allows you to specify where in the repo the project-specific config
-directory and tasks directory should be.
+Alternatively, for installation into a specific repo, add the same to
+`[repo-root]/.pi/skills/task/SKILL.md`. You can optionally include the path
+lines to explicitly set directory locations (these take priority over
+auto-discovered paths from `.git/info/task-system`):
 
 ```
 Follow the task system defined in /home/jonathon/dev/agent-task-system/skill.md
@@ -193,9 +196,14 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
+If setup has already been run, the path lines are optional -- they will be
+discovered from `.git/info/task-system`.
+
 **Excluded mode**: If using git-excluded artifacts, add the skill to your
 global config at `~/.pi/skills/task/SKILL.md` instead of the project-local
-`.pi/skills/` directory. This keeps all task system references out of the repo.
+`.pi/skills/` directory. Only the skill reference line is needed -- per-repo
+paths are discovered automatically from `.git/info/task-system`. This keeps
+all task system references out of the repo.
 
 ### Claude (CLAUDE.md)
 
@@ -209,9 +217,10 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
-**Excluded mode**: If using git-excluded artifacts, add these lines to
-`~/.claude/CLAUDE.md` instead so no task system references appear in the repo.
-Adjust paths to be absolute or relative to your home directory as needed.
+**Excluded mode**: If using git-excluded artifacts, add the skill reference
+line to `~/.claude/CLAUDE.md` instead so no task system references appear in
+the repo. Per-repo paths are discovered automatically from
+`.git/info/task-system`.
 
 ### Cursor (.cursorrules)
 
@@ -225,15 +234,16 @@ Project config: .task-system/
 Tasks directory: tasks/
 ```
 
-**Excluded mode**: If using git-excluded artifacts, add these lines to your
-global Cursor settings or `~/.cursorrules` instead so no task system references
-appear in the repo.
+**Excluded mode**: If using git-excluded artifacts, add the skill reference
+line to your global Cursor settings or `~/.cursorrules` instead so no task
+system references appear in the repo. Per-repo paths are discovered
+automatically from `.git/info/task-system`.
 
 ### Other Agents
 
 The task system works with any AI coding agent that supports custom
-instructions or system prompts. Add the three configuration lines to whatever
-file your agent reads for project-level instructions:
+instructions or system prompts. Add the following to whatever file your agent
+reads for project-level instructions:
 
 ```
 Follow the task system defined in <path-to-task-system>/skill.md
@@ -245,9 +255,15 @@ The `skill.md` file contains all the behavioral instructions. The agent reads
 it and follows the process. The prompts in `prompts/` are referenced by
 `skill.md` and contain detailed instructions for each phase.
 
+The `Project config` and `Tasks directory` lines are optional if setup has
+already been run -- the paths will be discovered from `.git/info/task-system`.
+Including them in the config file is fine and takes priority over the
+auto-discovered paths.
+
 **Excluded mode**: If using git-excluded artifacts, use your agent's
 global/user-level config file instead of the project-local one so no task
-system references appear in the repo.
+system references appear in the repo. Only the skill reference line is needed
+-- per-repo paths are discovered automatically from `.git/info/task-system`.
 
 ---
 
@@ -645,6 +661,9 @@ git?", answer **no**. The agent will:
 3. Place both the project config directory and tasks directory inside
    `.excluded/` (e.g., `.excluded/.task-system/` and `.excluded/tasks/`).
 4. Set `artifact-tracking` to `excluded` in `config.md`.
+5. Write a repo-local pointer file at `.git/info/task-system` containing the
+   per-repo paths (see [Repo-Local Path Discovery](#repo-local-path-discovery)
+   below).
 
 ### What Changes
 
@@ -661,21 +680,53 @@ When artifact tracking is `excluded`:
 
 ### Agent Config Placement
 
-The AI agent config lines (the three lines referencing `skill.md`, the project
-config directory, and the tasks directory) need to live somewhere the agent
-reads them. When using excluded mode, placing these in a project-local file
-like `CLAUDE.md` or `.cursorrules` would leave task-system references visible
-in git.
-
-Instead, consider adding the config lines to your **home directory** config:
+When using excluded mode, you typically add the skill reference to your
+**home directory** config so no trace of the task system appears in the repo:
 
 - **Pi**: `~/.pi/skills/task/SKILL.md` (global skill)
 - **Claude**: `~/.claude/CLAUDE.md` (global config)
 - **Cursor**: Global settings or `~/.cursorrules`
 
-This way, no trace of the task system appears in the repository at all. If you
-prefer the project-local file anyway, that works -- just be aware the config
-lines will be visible in git.
+The global config only needs the skill reference -- it does **not** need
+per-repo path lines:
+
+```
+Follow the task system defined in <path-to-task-system>/skill.md
+```
+
+The per-repo paths are discovered automatically from `.git/info/task-system`
+(see below). This means a single global skill file works across all your
+repositories, each with its own paths.
+
+If you prefer using a project-local file like `CLAUDE.md` or `.cursorrules`
+instead, that works too -- just be aware the config lines will be visible in
+git.
+
+### Repo-Local Path Discovery
+
+During setup, the agent writes a pointer file at `.git/info/task-system`
+containing the project config directory and tasks directory paths for this
+specific repo:
+
+```
+project-config: .excluded/.task-system/
+tasks-directory: .excluded/tasks/
+```
+
+This file lives inside `.git/` so it is inherently per-repo and never
+committed. It solves a key problem: a global skill file (shared across all
+repos) cannot hardcode per-repo paths. Instead, when the agent starts in a
+repo, it checks `.git/info/task-system` to find where this repo's config and
+tasks live.
+
+This pointer file is written for **all** setups (both committed and excluded
+mode), but it is especially important for excluded mode where the paths cannot
+be placed in a tracked config file.
+
+The resolution order is:
+1. Paths in the agent config file (if present, they take priority).
+2. Paths in `.git/info/task-system` (auto-discovered).
+3. If neither is found, the agent asks the user to run setup.
 
 ---
 
@@ -872,15 +923,20 @@ proceed" or similar.
 
 ### I want to use different paths in different repos
 
-Both the project config directory and tasks directory paths are configured
-per-repo in your AI agent config. Each repo can have its own paths.
+Both the project config directory and tasks directory paths are stored per-repo
+in `.git/info/task-system` (written during setup). Each repo has its own
+pointer file with its own paths. If you also specify paths in the agent config
+file, those take priority. See [Repo-Local Path Discovery](#repo-local-path-discovery).
 
 ### I don't want task artifacts in my git history
 
 During setup, answer "no" when asked whether to commit task system artifacts.
 The agent will help you configure a `.excluded/` directory (added to
-`.git/info/exclude`) where all task files live. Project code commits proceed
-normally -- only the task system's own files are excluded. See
+`.git/info/exclude`) where all task files live, and write a pointer file at
+`.git/info/task-system` so the agent can find them automatically. Add a single
+skill reference line to your global (home directory) agent config and the
+system works across all your repos with no trace in git. Project code commits
+proceed normally -- only the task system's own files are excluded. See
 [Git-Excluded Artifacts](#git-excluded-artifacts) for full details.
 
 ### Can I use this without an AI agent?

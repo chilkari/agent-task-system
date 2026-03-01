@@ -6,9 +6,17 @@ directory, populates starter files, and provides the correct AI config lines.
 
 ## Pre-Check
 
-Before starting, check if a project config directory already exists (look for
-common locations: `.task-system/`, `.dev/task-system/`, or ask the user). If one
-exists, warn the user and ask if they want to reconfigure or abort.
+Before starting, check if a project config directory already exists:
+
+1. Check `.git/info/task-system` for a repo-local pointer file (written by a
+   previous setup). If it exists, read the paths from it.
+2. Look for common locations: `.task-system/`, `.excluded/.task-system/`,
+   `.dev/task-system/`.
+3. Check directories listed in `.git/info/exclude` for a `.task-system/`
+   subdirectory.
+
+If a config directory is found, warn the user and ask if they want to
+reconfigure or abort.
 
 ## Step 1: Gather Configuration
 
@@ -206,16 +214,26 @@ If artifact tracking is `committed`, create the tasks directory with a
 If artifact tracking is `excluded`, create the tasks directory without
 `.gitkeep` -- the directory is not tracked by git.
 
-## Step 5: Output AI Config Lines
+## Step 5: Write Repo-Local Pointer File
+
+Write the file `.git/info/task-system` with the following content:
+
+```
+project-config: <project-config-dir>/
+tasks-directory: <tasks-dir>/
+```
+
+This file lives inside `.git/` and is never committed. It allows the agent to
+discover the repo-specific paths automatically, even when the skill is
+configured globally (e.g., in a home-directory config file). This file is
+written regardless of whether artifact tracking is `committed` or `excluded`.
+
+Create the `.git/info/` directory if it does not already exist.
+
+## Step 6: Output AI Config Lines
 
 Based on the agent the user specified, output the exact lines to add to their
-config file. The config lines are the same regardless of agent:
-
-```
-Follow the task system defined in <path-to-task-system>/skill.md
-Project config: <project-config-dir>/
-Tasks directory: <tasks-dir>/
-```
+config file.
 
 ### When artifact tracking is `committed`
 
@@ -226,32 +244,44 @@ Tell the user to add the config lines to their project-local config file:
 - **Cursor**: `.cursorrules` at the project root
 - **Other**: Whatever file the agent reads for project-level instructions
 
+The config lines should include the skill reference and the paths. (The paths
+are also stored in `.git/info/task-system` from Step 5, but including them in
+the project-local config file makes them visible to collaborators and gives
+them explicit priority.)
+
+```
+Follow the task system defined in <path-to-task-system>/skill.md
+Project config: <project-config-dir>/
+Tasks directory: <tasks-dir>/
+```
+
 ### When artifact tracking is `excluded`
 
-Warn the user:
+Since the repo-local pointer file (`.git/info/task-system`) now stores the
+per-repo paths, the global config only needs to reference `skill.md` -- it
+does not need per-repo path lines. Tell the user:
 
-> Since you chose not to commit task system artifacts, adding these config
-> lines to a project-local file (like `CLAUDE.md` or `.cursorrules`) would
-> leave task-system references visible in git. Consider adding them to your
-> **home directory** config file instead so no trace is left in the repo:
+> Since you chose not to commit task system artifacts, add the skill reference
+> to your **home directory** config file so no trace is left in the repo:
 >
 > - **Pi**: `~/.pi/skills/task/SKILL.md` (global skill)
 > - **Claude**: `~/.claude/CLAUDE.md` (global config)
 > - **Cursor**: Global settings or `~/.cursorrules`
 > - **Other**: Your agent's global/user-level config file
 >
-> If you prefer to use the project-local file anyway, that is fine -- just be
-> aware those config lines will be visible in git.
+> The only line needed is:
+> ```
+> Follow the task system defined in <path-to-task-system>/skill.md
+> ```
+>
+> The per-repo paths are stored in `.git/info/task-system` and will be
+> discovered automatically when the agent operates in this repository.
+>
+> If you prefer to use a project-local file instead (like `CLAUDE.md` or
+> `.cursorrules`), that works too -- just be aware those config lines will
+> be visible in git.
 
-Then output the config lines with the actual paths (which will point into the
-excluded directory, e.g., `.excluded/.task-system/` and `.excluded/tasks/`).
-
-Note: when placing config lines in a home-directory file, the paths must be
-either absolute or relative to where the agent resolves them. Confirm with
-the user that the paths will resolve correctly from their chosen config
-location.
-
-## Step 6: Review
+## Step 7: Review
 
 Walk the user through each generated file. For each file:
 1. Show what was generated and why.
