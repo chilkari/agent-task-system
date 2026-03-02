@@ -129,6 +129,37 @@ nice but were not requested). When this happens:
 If `phase-steps/03-plan.md` exists in the project config directory, read it
 and execute the additional steps it describes now.
 
+### Impact Analysis
+
+Before presenting the plan, verify that all consumers of the code being changed
+have been accounted for. For each file listed in the implementation steps as
+being modified:
+
+1. **Search for callers, importers, and dependents** — use grep, find, or
+   equivalent tools to locate every file that imports, requires, calls, or
+   otherwise references the modules, functions, classes, types, or interfaces
+   defined in the file being changed.
+2. **Check for indirect consumers** — look for re-exports, dependency injection
+   bindings, plugin registrations, configuration references, and dynamic
+   lookups (e.g., string-based references) that might not appear in a simple
+   import search.
+3. **Compare against the plan** — for each discovered consumer, determine
+   whether the planned changes could affect it. Consider signature changes,
+   behavioral changes, type changes, removed or renamed exports, and changed
+   return values or side effects.
+4. **Update the plan if needed** — if you find affected consumers that are not
+   already addressed by an implementation step:
+   - Add new steps or extend existing steps to cover the necessary updates.
+   - Flag the newly discovered impact in the **Breaking Changes** section if
+     it affects a public API or contract.
+   - If the consumer updates are out of scope, surface them to the user under
+     the backlog awareness rules above.
+
+This step is a safety net — research may have missed transitive dependents or
+callers in unexpected parts of the codebase. The goal is to ensure the plan
+does not introduce broken call sites, type errors, or runtime failures in code
+outside the immediate change set.
+
 ### Review with User
 
 Present the plan and ask the user to review it. Point out:
