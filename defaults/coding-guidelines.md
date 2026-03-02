@@ -45,6 +45,12 @@ directory. Task-specific modifications may be made during the planning phase.
   tools.
 - Validate and sanitize inputs at trust boundaries.
 
+## Git Operations
+
+- **Never push to a remote.** The agent may stage and commit changes, but
+  `git push` (or any variant such as `git push origin`, `git push --force`,
+  etc.) must never be executed. Pushing is always the user's responsibility.
+
 ## Commit Messages
 
 - Follow the commit message format defined in the project's
