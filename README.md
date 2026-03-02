@@ -10,6 +10,40 @@ This repo is not a standalone application. It is a set of markdown prompt
 templates that AI coding agents (Claude, Cursor, Pi, etc.) read and follow.
 You install it once and it works across all your projects.
 
+## Some Notes on Current Status
+
+As of this note, this repo is two days old, so... it's just a nascent idea. Ideas
+welcomed, of course. A few things I want to pull out that may not be clear in
+the denser README context:
+
+1. To use, you clone this repo somewhere available, but _use it_ from inside
+   other repos. After installation (see below), open your agent harness of
+   choice _in your project repo_ and run a `/task set up the task system` to get
+   it configured (one-time), then just use `/task new task` to start new tasks.
+2. An important decision is whether you want to track the task artifacts in git
+   or keep them excluded. On a large "work" repo — I'm just experimenting with
+   this and don't want to impose it on everyone else — I exclude all the task
+   artifacts. However, for personal projects, I quite like having the full
+   markdown files of everything that was done, so I check them in on those
+   projects. If you want to exclude, it just creates an excluded directory in
+   git (via `.git/info/exclude`) and puts all the task artifacts in there. By
+   default, it's named `.excluded`
+3. It looks like a lot of phases. I agree -- but I have it in a bit of "safe"
+   mode right now, and I like it to stop and ask me to continue. These will
+   naturally get taken out in favor of more automation once I like what it's
+   doing.
+4. That being said, don't ignore the "Retrospective" phase. That's not a
+   scrum/agile ceremony -- it's the point where you _add_ new coding guidelines
+   and prompt enhancements to your project so that things you hit in this task
+   don't happen again in future tasks. It's the part that makes this
+   self-improving with each new task. It's agentic — the agent reviews its own
+   code-review findings and suggests improvements to avoid those issues in
+   future tasks.
+5. There are also two shared files stored in the `<tasks>` directory. A shared
+   "knowledge base" that is written to during research and read by future tasks,
+   and a "backlog" for tasks discovered along the way that are out-of-scope, but
+   shouldn't be lost.
+
 ## How It Works
 
 When you say **"new task"**, the agent walks through 9 phases:
