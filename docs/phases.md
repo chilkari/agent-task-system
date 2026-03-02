@@ -178,6 +178,17 @@ The backlog is a shared file across all tasks. It is a simple append-only list
 that the user manages and prioritizes outside the task system. See `skill.md`
 § "Backlog" for the file format.
 
+## Project-Specific Phase Steps
+
+Any phase can be extended with project-specific steps by creating files in the
+project config directory under `phase-steps/`. For example,
+`phase-steps/08-final-polish.md` adds extra steps to the polish phase.
+
+This is the recommended way to customize individual phases per-project without
+modifying the task system. See
+[configuration.md](configuration.md) § `phase-steps/` for injection points
+and examples.
+
 ## Cross-Session Workflow
 
 Tasks can span multiple sessions. All progress is saved to disk incrementally.

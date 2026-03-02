@@ -79,6 +79,11 @@ These remain high-level here and become specific in the planning phase.>
 **Reasoning**: <why this complexity level was chosen>
 ```
 
+### Project-Specific Steps
+
+If `phase-steps/01-definition.md` exists in the project config directory, read
+it and execute the additional steps it describes now.
+
 ### Review with User
 
 Present the drafted definition to the user. Ask them to review each section:

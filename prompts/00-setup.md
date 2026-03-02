@@ -206,6 +206,18 @@ detected:
 <detected or "# command to start the dev server">
 ```
 
+## Step 3b: Mention Phase Steps (Optional)
+
+After creating the project config files, briefly inform the user:
+
+"You can also add project-specific steps to individual phases by creating
+files in `<project-config-dir>/phase-steps/`. For example, a file named
+`08-final-polish.md` would add extra steps to the polish phase. This is
+optional -- you can add these at any time."
+
+Do not create the `phase-steps/` directory during setup. It is created only
+when the user adds their first phase-steps file.
+
 ## Step 4: Create Tasks Directory
 
 If artifact tracking is `committed`, create the tasks directory with a

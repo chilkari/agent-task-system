@@ -146,6 +146,71 @@ task system does not ship (e.g., `python.md`), it is used as-is.
 - Prefer the project's date utility functions over raw Date objects.
 ```
 
+## `phase-steps/`
+
+Project-specific additional steps that are injected into individual phases.
+Each file corresponds to a phase prompt by name and contains extra instructions
+that the agent executes at a designated point within that phase. These are
+**appended** — they add steps to the phase without replacing any default
+behavior.
+
+File names must match the prompt file names in the task system's `prompts/`
+directory:
+
+| File | Injection Point |
+|------|-----------------|
+| `phase-steps/01-definition.md` | After writing the definition, before user review |
+| `phase-steps/02-research.md` | After exploring the codebase, before writing the research document |
+| `phase-steps/03-plan.md` | After writing the plan, before user review |
+| `phase-steps/04-review.md` | During the review loop, before finalizing the plan |
+| `phase-steps/05-implement.md` | After all steps are implemented, before the final testing strategy |
+| `phase-steps/06-code-review.md` | After the review checklist, before writing the review document |
+| `phase-steps/07-review-response.md` | After implementing fixes, before the re-review loop |
+| `phase-steps/08-final-polish.md` | After standard polish checks, before writing the polish document |
+| `phase-steps/09-retrospective.md` | After gathering user observations, before applying changes |
+
+Only create files for phases where you need additional steps. Missing files
+are silently skipped.
+
+**Example — extra type-check step in polish** (`phase-steps/08-final-polish.md`):
+```markdown
+# Additional Polish Steps
+
+## Run Full Type Check
+
+Run the following command to verify type safety across the full monorepo:
+
+\`\`\`
+pnpm tsc --noEmit --project tsconfig.build.json --pretty 2>&1 | head -100
+\`\`\`
+
+This project uses composite TypeScript projects with path aliases. The
+standard `tsc --noEmit` will fail — you must use `tsconfig.build.json`.
+If there are type errors, fix them before proceeding. Do not suppress errors
+with `@ts-ignore` or `@ts-expect-error`.
+```
+
+**Example — require dependency review during research** (`phase-steps/02-research.md`):
+```markdown
+# Additional Research Steps
+
+## Check for Circular Dependencies
+
+Run `madge --circular --extensions ts src/` and report any circular
+dependency chains that involve files relevant to this task. Note these as
+risks in the research document.
+```
+
+**Example — extra validation during implementation** (`phase-steps/05-implement.md`):
+```markdown
+# Additional Implementation Steps
+
+## Verify Bundle Size
+
+After all implementation steps, run `pnpm build && pnpm size-limit`.
+If any package exceeds its size budget, investigate and fix before proceeding.
+```
+
 ## Merge Behavior Summary
 
 | File | Strategy | Effect |
@@ -154,3 +219,4 @@ task system does not ship (e.g., `python.md`), it is used as-is.
 | `commit-message-format.md` | Replace | Project format overrides default |
 | `project-commands.md` | Replace | Project commands override template |
 | `review-profiles/<lang>.md` | Append | Project checks added to defaults |
+| `phase-steps/<phase>.md` | Append | Project steps added to phase |

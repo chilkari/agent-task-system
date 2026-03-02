@@ -88,6 +88,11 @@ If you recommend splitting:
    separate task directories. Update the current task's scope or close it in
    favor of the sub-tasks.
 
+### Project-Specific Steps
+
+If `phase-steps/02-research.md` exists in the project config directory, read
+it and execute the additional steps it describes now.
+
 ### Write the Research Document
 
 Write `02-research.md` in the task directory:

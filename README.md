@@ -98,6 +98,7 @@ In each project, setup creates a **project config directory** (default:
 | `coding-guidelines.md` | Project-specific coding rules (appended to defaults) |
 | `commit-message-format.md` | Your commit message convention |
 | `project-commands.md` | Commands for build, test, lint, format |
+| `phase-steps/<phase>.md` | Additional steps injected into specific phases (optional) |
 
 It also creates a **tasks directory** (default: `tasks/`) where each task gets
 its own subdirectory with definition, plan, implementation tracking, review

@@ -124,6 +124,11 @@ nice but were not requested). When this happens:
    `skill.md` § "Backlog".
 3. If the user says it is actually in scope, incorporate it into the plan.
 
+### Project-Specific Steps
+
+If `phase-steps/03-plan.md` exists in the project config directory, read it
+and execute the additional steps it describes now.
+
 ### Review with User
 
 Present the plan and ask the user to review it. Point out:

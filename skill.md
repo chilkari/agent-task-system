@@ -155,6 +155,17 @@ When a phase needs to read a file, resolve it in this order:
 3. If the project defines a language that the task system does not have a
    profile for, use the project's profile as-is.
 
+### Phase Steps
+1. Each phase checks for a matching file in the project config directory at
+   `phase-steps/<NN>-<phase-name>.md` (e.g., `phase-steps/08-final-polish.md`).
+2. If the file exists, the phase reads it and executes the additional steps
+   described in it at the designated injection point within the phase.
+3. The file names match the prompt file names in `prompts/` so the mapping is
+   obvious.
+4. These are **project-specific additions** — they do not replace any default
+   phase behavior. The phase runs its normal steps and also runs the
+   project-defined steps.
+
 ## Backlog
 
 The task system maintains an optional `backlog.md` file in the tasks directory

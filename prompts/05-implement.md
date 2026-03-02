@@ -130,6 +130,12 @@ utilities, inconsistent patterns in surrounding code). When this happens:
 3. Do not fix out-of-scope issues as part of the current task unless the user
    explicitly asks you to.
 
+### Project-Specific Steps
+
+If `phase-steps/05-implement.md` exists in the project config directory, read
+it and execute the additional steps it describes now. These steps run after all
+implementation steps are complete but before the final testing strategy.
+
 ### Running the Testing Strategy
 
 After all implementation steps are complete:

@@ -84,6 +84,12 @@ Evaluate the changes against each of the following:
 - Inputs are validated at trust boundaries.
 - No obvious injection vectors or unsafe operations.
 
+### Project-Specific Steps
+
+If `phase-steps/06-code-review.md` exists in the project config directory,
+read it and execute the additional steps it describes now. Include any findings
+from these steps in the review document below.
+
 ### Write the Review
 
 Write `06-code-review.md` (or `06-code-review-rN.md` for subsequent rounds)

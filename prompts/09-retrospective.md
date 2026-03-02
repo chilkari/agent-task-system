@@ -144,6 +144,12 @@ Listen to the user's observations. For each one:
   and note it as a process observation -- these cannot be fixed by editing
   project config but are valuable to record.
 
+### Project-Specific Steps
+
+If `phase-steps/09-retrospective.md` exists in the project config directory,
+read it and execute the additional steps it describes now. These steps run
+after gathering user observations but before applying changes.
+
 ### Step 5: Apply Approved Changes
 
 For each suggestion the user accepts (whether agent-suggested or user-raised):

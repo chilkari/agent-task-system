@@ -29,6 +29,29 @@ for tasks involving <Language>.
 The task system auto-detects languages during research and applies matching
 profiles. No other configuration is needed.
 
+## Adding Phase Steps (Per-Project)
+
+You can inject additional steps into any phase without modifying the task
+system itself. Create files in your project config directory under
+`phase-steps/`, named to match the phase prompt:
+
+```
+.task-system/
+  phase-steps/
+    05-implement.md
+    08-final-polish.md
+```
+
+Each file contains prose instructions that the agent executes at a specific
+point within the phase. The steps are additive — they run alongside the
+default phase behavior, not instead of it.
+
+This is the recommended way to customize phase behavior per-project. It
+requires no changes to the task system and works across all agents.
+
+See [configuration.md](configuration.md) § `phase-steps/` for the full list
+of injection points and examples.
+
 ## Modifying Prompt Templates
 
 The files in `prompts/` contain the full instructions for each phase. You can

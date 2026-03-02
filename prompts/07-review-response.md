@@ -78,6 +78,12 @@ Update the code review file with the disposition of each finding:
 **Disposition**: Rejected -- <user's reason for rejecting>
 ```
 
+### Project-Specific Steps
+
+If `phase-steps/07-review-response.md` exists in the project config directory,
+read it and execute the additional steps it describes now. These steps run
+after all fixes are implemented but before the re-review loop.
+
 ### Re-Review Loop
 
 After all fixes are implemented:

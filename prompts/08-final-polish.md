@@ -95,6 +95,13 @@ Run the full test suite using the project commands. All tests must pass.
 If tests fail after polish changes, fix the issues. If the failures are not
 caused by polish changes, investigate and resolve.
 
+### Project-Specific Steps
+
+If `phase-steps/08-final-polish.md` exists in the project config directory,
+read it and execute the additional steps it describes now. These steps run
+after the standard polish checks but before writing the polish document. Add
+any results from project-specific steps to the polish document below.
+
 ### Step 8: Write Polish Document
 
 Write `08-final-polish.md` in the task directory:

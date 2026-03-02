@@ -74,6 +74,12 @@ is the continuity mechanism:
   current state: "Last time we discussed X, Y, Z. We still have these open
   items: A, B. Where would you like to pick up?"
 
+### Project-Specific Steps
+
+If `phase-steps/04-review.md` exists in the project config directory, read it
+and execute the additional steps it describes now. These steps run once, before
+the plan is finalized — they may add additional review checks or validation.
+
 ### Finalizing the Plan
 
 When the user explicitly approves the plan (e.g., "looks good", "ready to
