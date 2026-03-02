@@ -204,6 +204,24 @@ of the codebase itself and change slowly.
 relevance, anything that only matters in the context of the current task. These
 belong in `02-research.md`, not the shared knowledge base.
 
+### Backlog Awareness
+
+During research, you may discover issues, technical debt, or improvement
+opportunities that are clearly outside the scope of the current task (e.g.,
+duplicated logic that predates this task, deprecated patterns, missing tests
+for unrelated modules). When you encounter such items:
+
+1. Note the item and ask the user: "This seems out of scope for the current
+   task. Should I add it to the backlog?"
+2. If the user agrees, append the item to `backlog.md` in the tasks directory
+   (create the file if it does not exist). Use the format described in
+   `skill.md` § "Backlog".
+3. If the user says it is actually in scope, incorporate it into the research
+   findings and it will feed into the plan.
+
+Do not silently ignore out-of-scope discoveries -- surface them so nothing is
+lost.
+
 ### Update State
 
 Update `task-state.md`:

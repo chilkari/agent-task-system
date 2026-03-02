@@ -140,6 +140,8 @@ entries it plans to rely on and corrects stale information.
   are written to the consuming project, not here.
 - **Codebase knowledge base** — `.codebase-knowledge.md` lives in the
   consuming project's tasks directory, not here.
+- **Backlog** — `backlog.md` lives in the consuming project's tasks directory,
+  not here. It captures out-of-scope items discovered during tasks.
 - **Project-specific config** — per-project overrides for coding guidelines,
   commands, and review profiles live in the consuming project's config
   directory (typically `.task-system/`).

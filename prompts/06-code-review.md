@@ -144,6 +144,22 @@ implementation satisfies it.>
 If there are no findings in a severity category, include the heading with
 "None." underneath.
 
+### Backlog Awareness
+
+During code review, you may notice pre-existing issues in the surrounding code
+that are outside the scope of the current changes (e.g., patterns in the
+codebase that the new code was forced to follow but that should be improved,
+missing tests for related functionality, technical debt adjacent to the changed
+files). When this happens:
+
+1. Note the item and ask the user: "I noticed something out of scope during
+   review that may be worth tracking. Should I add it to the backlog?"
+2. If the user agrees, append the item to `backlog.md` in the tasks directory
+   (create the file if it does not exist). Use the format described in
+   `skill.md` § "Backlog".
+3. Do not include out-of-scope items as review findings -- they are not
+   problems with the current changes.
+
 ### Update State
 
 Update `task-state.md`:

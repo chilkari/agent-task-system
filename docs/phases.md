@@ -166,6 +166,18 @@ You accept or decline each suggestion.
 - Process-level observations about the workflow are captured as notes for your
   reference.
 
+## Backlog
+
+During research, planning, implementation, and code review, the agent may
+discover work that is outside the current task's scope — technical debt,
+improvement opportunities, or related features. Rather than silently ignoring
+these or scope-creeping the current task, the agent surfaces them and asks
+whether to add them to `backlog.md` in the tasks directory.
+
+The backlog is a shared file across all tasks. It is a simple append-only list
+that the user manages and prioritizes outside the task system. See `skill.md`
+§ "Backlog" for the file format.
+
 ## Cross-Session Workflow
 
 Tasks can span multiple sessions. All progress is saved to disk incrementally.
@@ -196,3 +208,10 @@ A completed task directory contains:
 | `09-summary.md` | 8 | Final summary of what was delivered |
 | `10-retrospective.md` | 9 | Config changes and process notes (optional) |
 | `task-state.md` | 1+ | Phase tracking, timestamps, complexity |
+
+The tasks directory (parent of task subdirectories) may also contain:
+
+| File | Purpose |
+|------|---------|
+| `.codebase-knowledge.md` | Cumulative codebase knowledge base |
+| `backlog.md` | Out-of-scope items discovered during tasks |

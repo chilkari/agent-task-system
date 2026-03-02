@@ -110,6 +110,20 @@ breaking changes, state that explicitly.>
 the plan might need to adapt, dependencies on external factors, etc.>
 ```
 
+### Backlog Awareness
+
+While creating the plan, you may identify related work that falls outside the
+task's defined scope (e.g., prerequisite refactors that are not strictly
+necessary, improvements to adjacent code, additional features that would be
+nice but were not requested). When this happens:
+
+1. Note the item and ask the user: "This seems out of scope for the current
+   task. Should I add it to the backlog?"
+2. If the user agrees, append the item to `backlog.md` in the tasks directory
+   (create the file if it does not exist). Use the format described in
+   `skill.md` § "Backlog".
+3. If the user says it is actually in scope, incorporate it into the plan.
+
 ### Review with User
 
 Present the plan and ask the user to review it. Point out:

@@ -155,6 +155,40 @@ When a phase needs to read a file, resolve it in this order:
 3. If the project defines a language that the task system does not have a
    profile for, use the project's profile as-is.
 
+## Backlog
+
+The task system maintains an optional `backlog.md` file in the tasks directory
+for capturing out-of-scope work discovered during a task. During research,
+planning, implementation, and code review, the agent may encounter issues,
+improvements, or refactoring opportunities that are outside the current task's
+scope. When this happens:
+
+1. The agent asks the user whether the discovered item is in scope for the
+   current task.
+2. If the user says it is **not** in scope, the agent asks whether to add it
+   to `backlog.md`.
+3. If approved, the agent appends the item to `backlog.md` in the tasks
+   directory, creating the file if it does not exist.
+
+The backlog is a shared file across all tasks (it lives in the tasks directory,
+not inside a specific task's subdirectory). It is a simple, append-friendly
+list -- not a prioritized queue. The user manages prioritization outside the
+task system.
+
+### Backlog File Format
+
+```markdown
+# Backlog
+
+## <short title>
+- **Source**: <task slug and phase where it was discovered>
+- **Added**: <date>
+- **Description**: <what needs to be done and why>
+
+## <short title>
+...
+```
+
 ## Cross-Session Behavior
 
 Tasks may span multiple sessions. When resuming:

@@ -116,6 +116,20 @@ If you encounter something that prevents progress on a step:
 3. Ask the user for guidance. Do not attempt to work around blockers by
    deviating significantly from the plan.
 
+### Backlog Awareness
+
+During implementation, you may encounter code issues that are unrelated to the
+current task but worth addressing later (e.g., pre-existing bugs, duplicated
+utilities, inconsistent patterns in surrounding code). When this happens:
+
+1. Note the item and ask the user: "I found something out of scope that may
+   be worth tracking. Should I add it to the backlog?"
+2. If the user agrees, append the item to `backlog.md` in the tasks directory
+   (create the file if it does not exist). Use the format described in
+   `skill.md` § "Backlog".
+3. Do not fix out-of-scope issues as part of the current task unless the user
+   explicitly asks you to.
+
 ### Running the Testing Strategy
 
 After all implementation steps are complete:
