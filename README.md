@@ -58,7 +58,7 @@ When you say **"new task"**, the agent walks through 9 phases:
 | 6 | **Code Review** | The agent critically reviews its own changes |
 | 7 | **Review Response** | Fix issues, discuss suggestions with you |
 | 8 | **Polish** | Lint, format, remove AI artifacts, final tests |
-| 9 | **Retrospective** | Optionally tune project config for future tasks |
+| 9 | **Retrospective** | Tune project config for future tasks |
 
 Tasks can span multiple sessions. All progress is saved to disk — just say
 **"resume task"** to pick up where you left off.

@@ -153,7 +153,7 @@ tests, and writes the final summary.
 **Reads**: All task artifacts, current project config files
 **Writes**: `10-retrospective.md`, project config files (if changes accepted),
 `task-state.md`
-**Interaction**: Interactive — optional, you can skip entirely
+**Interaction**: Interactive — agent presents suggestions, user approves or declines each
 
 The agent mines the task for signals about what could improve: recurring code
 review findings that should become coding guidelines, missing review profile
@@ -217,7 +217,7 @@ A completed task directory contains:
 | `06-code-review-rN.md` | 7 | Subsequent review rounds |
 | `08-final-polish.md` | 8 | Cleanup notes, lint/format/test results |
 | `09-summary.md` | 8 | Final summary of what was delivered |
-| `10-retrospective.md` | 9 | Config changes and process notes (optional) |
+| `10-retrospective.md` | 9 | Config changes and process notes |
 | `task-state.md` | 1+ | Phase tracking, timestamps, complexity |
 
 The tasks directory (parent of task subdirectories) may also contain:

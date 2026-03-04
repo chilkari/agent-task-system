@@ -34,7 +34,7 @@ prompts/                    # Phase-specific prompt templates (the core logic)
   06-code-review.md         # Phase 6: Code review of changes
   07-review-response.md     # Phase 7: Address review findings
   08-final-polish.md        # Phase 8: Lint, format, cleanup, summary
-  09-retrospective.md       # Phase 9: Optional retrospective & config tuning
+  09-retrospective.md       # Phase 9: Retrospective & config tuning
 
 defaults/                   # Baseline configuration (applied to all projects)
   coding-guidelines.md      # Default coding rules (always appended)
@@ -86,7 +86,7 @@ task-system-design-plan.md  # Detailed design plan used to build this system
 - **Phase transitions are deterministic.** See `skill.md` § "Phase Routing"
   and "Phase Transitions" for the exact flow, including skip conditions
   (small tasks skip research), loops (review ↔ review response), and optional
-  phases (retrospective can be declined).
+  phases.
 
 ## Guidelines for Modifying This Repo
 

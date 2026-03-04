@@ -1,8 +1,7 @@
 # Phase 9: Retrospective & Tuning
 
-You are offering the user an optional retrospective to tune the project's task
-system configuration for future tasks. This phase is about improving the
-process, not the code.
+You are running a retrospective to tune the project's task system configuration
+for future tasks. This phase is about improving the process, not the code.
 
 ## Prerequisites
 
@@ -30,20 +29,7 @@ Also read the current project config files:
 
 ## Instructions
 
-### Step 1: Offer the Retrospective
-
-Ask the user:
-
-"The task is complete. Would you like to do a quick retrospective? I'll review
-what happened during this task and suggest adjustments to your project
-configuration so future tasks go more smoothly. You can also share anything you
-noticed during the process.
-
-If not, we're done -- the task is complete."
-
-If the user declines, skip to **Declined -- Update State**.
-
-### Step 2: Mine Task Artifacts for Suggestions
+### Step 1: Mine Task Artifacts for Suggestions
 
 Review the task artifacts and identify concrete, actionable suggestions. Look
 for these specific signals:
@@ -87,7 +73,7 @@ for these specific signals:
 - Corrections to existing knowledge base entries discovered during
   implementation (e.g., a module's API changed, a pattern is no longer used).
 
-### Step 3: Present Suggestions
+### Step 2: Present Suggestions
 
 Organize your suggestions by config file. For each suggestion:
 - State what you observed (with a reference to which artifact/phase it came
@@ -129,7 +115,7 @@ suggestions." Only present categories where you have something concrete.
 If you have no suggestions at all, say so briefly: "I didn't identify any
 configuration changes from this task. Everything worked as expected."
 
-### Step 4: User-Driven Observations
+### Step 3: User-Driven Observations
 
 After presenting your suggestions (or lack thereof), ask:
 
@@ -150,7 +136,7 @@ If `phase-steps/09-retrospective.md` exists in the project config directory,
 read it and execute the additional steps it describes now. These steps run
 after gathering user observations but before applying changes.
 
-### Step 5: Apply Approved Changes
+### Step 4: Apply Approved Changes
 
 For each suggestion the user accepts (whether agent-suggested or user-raised):
 
@@ -176,7 +162,7 @@ described in `prompts/02-research.md` § "Update Codebase Knowledge Base". If
 the knowledge base does not exist yet, create it. Update the "Last updated"
 line at the top of the file.
 
-### Step 6: Write Retrospective Document
+### Step 5: Write Retrospective Document
 
 Write `10-retrospective.md` in the task directory:
 
@@ -219,7 +205,7 @@ still be written with a brief note:
 No configuration changes or process notes from this task.
 ```
 
-### Step 7: Final Commit
+### Step 6: Final Commit
 
 Check the `artifact-tracking` setting in the project config's `config.md`.
 
@@ -238,18 +224,6 @@ Update `task-state.md`:
 - **Phase History**:
   - ...previous entries...
   - Phase 9 (Retrospective): completed <timestamp>
-  - Task complete: <timestamp>
-```
-
-### Declined -- Update State
-
-If the user declined the retrospective, update `task-state.md`:
-
-```markdown
-- **Current Phase**: complete
-- **Phase History**:
-  - ...previous entries...
-  - Phase 9 (Retrospective): skipped
   - Task complete: <timestamp>
 ```
 
