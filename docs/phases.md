@@ -9,15 +9,15 @@ for getting the best results.
 ```
 Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7 → Phase 8 → Phase 9
 Define    Research   Plan       Review    Implement  Code       Review    Polish    Retro
-          (skip if              (loop)               Review     Response            (optional)
+          (skip if              (loop)     (auto→6)  Review     Response
            small)                                               (loop→6)
 ```
 
 **Transitions:**
 - After Phase 1: Small tasks skip to Phase 3. Medium/large go to Phase 2.
 - After Phase 4: Loops until you approve the plan.
+- After Phase 5: Automatically continues to Phase 6 (no user prompt).
 - After Phase 7: Loops back to Phase 6 for re-review until clean.
-- Phase 9 is optional — you can decline.
 
 ## Phase 1: Definition
 

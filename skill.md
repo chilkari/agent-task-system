@@ -110,7 +110,7 @@ Setup (one-time) --> Phase 1 --> Phase 2 --> Phase 3 --> Phase 4 --> Phase 5 -->
 - After **Phase 2**: Go to Phase 3. May trigger task splitting.
 - After **Phase 3**: Go to Phase 4. May trigger task splitting.
 - After **Phase 4**: Loops until user approves. Then go to Phase 5.
-- After **Phase 5**: Go to Phase 6.
+- After **Phase 5**: Go to Phase 6 automatically (no user prompt).
 - After **Phase 6**: Go to Phase 7.
 - After **Phase 7**: Loop back to Phase 6 for re-review. When review is clean
   and user is satisfied, go to Phase 8.

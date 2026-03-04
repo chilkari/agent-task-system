@@ -175,4 +175,5 @@ Update `task-state.md`:
 
 ## Next Steps
 
-Proceed to Phase 6 (Code Review).
+Immediately proceed to Phase 6 (Code Review). Do not wait for user input --
+the code review should start automatically after implementation completes.
