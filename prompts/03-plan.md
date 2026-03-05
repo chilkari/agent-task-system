@@ -160,19 +160,6 @@ callers in unexpected parts of the codebase. The goal is to ensure the plan
 does not introduce broken call sites, type errors, or runtime failures in code
 outside the immediate change set.
 
-### Review with User
-
-Present the plan and ask the user to review it. Point out:
-- The assembled coding guidelines and any additions you proposed.
-- Steps with high difficulty/risk ratings.
-- The testing strategy and whether it sufficiently covers the acceptance
-  criteria.
-- Any breaking changes identified.
-- Open questions that need the user's input.
-
-This is a draft. The user will have the opportunity to revise it thoroughly in
-Phase 4.
-
 ### Update State
 
 Update `task-state.md`:
@@ -186,4 +173,6 @@ Update `task-state.md`:
 
 ## Next Steps
 
-Proceed to Phase 4 (Review/Revise with User).
+Once the plan is written, state is updated, and any project-specific steps are
+complete, immediately proceed to Phase 4 (Review/Revise with User). Do not wait
+for user input -- load and follow `prompts/04-review.md` now.
