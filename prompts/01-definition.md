@@ -111,5 +111,8 @@ Create or update `task-state.md` in the task directory:
 
 ## Next Steps
 
-- If complexity is **small**: Proceed to Phase 3 (Plan). Skip research.
-- If complexity is **medium** or **large**: Proceed to Phase 2 (Research).
+Once the user approves the definition and state is updated, immediately
+proceed to the next phase without waiting for additional user input:
+
+- If complexity is **small**: Load and follow `prompts/03-plan.md` now.
+- If complexity is **medium** or **large**: Load and follow `prompts/02-research.md` now.
