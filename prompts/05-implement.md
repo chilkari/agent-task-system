@@ -33,13 +33,62 @@ Before making any code changes, verify the codebase is in a clean state:
    files inside the tasks directory and project config directory -- these are
    task system artifacts and are expected to have uncommitted changes during
    task work.
-2. **Existing tests**: Run the test command from project commands. If tests
+2. **Branch check**: Run `git branch --show-current` to determine the current
+   branch. If the branch is `main` or `master`, prompt the user before
+   proceeding:
+
+   **Build a suggested branch name:**
+   - Read `01-definition.md` from the task directory.
+   - Check the project config directory's `config.md` for a `## Branch Prefix`
+     section. If present, use its value as a namespace prefix followed by `/`.
+   - If a "Source Issue" section exists in `01-definition.md`, extract the
+     issue identifier from the **ID** field:
+     - For Gitea identifiers (`owner/repo#N` or `#N`), use only the numeric
+       portion `N`.
+     - For Linear identifiers (`ENG-123`), use the full identifier.
+   - Construct the branch name using this pattern:
+     - With prefix + issue: `<prefix>/<identifier>-<task-slug>`
+     - With prefix, no issue: `<prefix>/<task-slug>`
+     - No prefix + issue: `<identifier>-<task-slug>`
+     - No prefix, no issue: `<task-slug>`
+   - The task slug is the task directory name.
+   - Never use `#` in the branch name.
+
+   **Examples** (with `Branch Prefix` set to `jdw`):
+   - Gitea issue `chilkari/agent-task-system#1` → `jdw/1-branch-preflight-check`
+   - Linear issue `ENG-123` → `jdw/ENG-123-branch-preflight-check`
+   - No issue → `jdw/branch-preflight-check`
+
+   **Examples** (no `Branch Prefix` configured):
+   - Gitea issue `#1` → `1-branch-preflight-check`
+   - Linear issue `ENG-123` → `ENG-123-branch-preflight-check`
+   - No issue → `branch-preflight-check`
+
+   **Present three options to the user:**
+   - Accept the suggested branch name
+   - Provide a different branch name
+   - Decline and continue on the current branch
+
+   **If the user accepts or provides a name:**
+   - Check for uncommitted changes to project source code (same rules as
+     step 1 -- ignore tasks directory and project config directory files).
+   - If uncommitted changes exist, offer to stash them with
+     `git stash --include-untracked`.
+   - Create the branch with `git checkout -b <branch-name>`.
+   - If changes were stashed, pop them with `git stash pop`. If the pop
+     fails (conflict), inform the user and let them resolve manually.
+
+   **If the user declines:** Continue on the current branch.
+
+   If the branch is not `main` or `master`, skip this check silently.
+
+3. **Existing tests**: Run the test command from project commands. If tests
    fail, stop and report. These are pre-existing failures that must be resolved
    before implementation begins -- do not attempt to fix them as part of this
    task.
-3. **Build**: If a build command is configured, run it. If it fails, stop and
+4. **Build**: If a build command is configured, run it. If it fails, stop and
    report for the same reason.
-4. **Record rollback point**: Run `git rev-parse HEAD` and record the commit
+5. **Record rollback point**: Run `git rev-parse HEAD` and record the commit
    SHA. This is the rollback point for the entire task.
 
 If resuming from a previous session (05-implementation.md already exists and
