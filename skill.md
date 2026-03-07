@@ -154,6 +154,11 @@ When a phase needs to read a file, resolve it in this order:
 3. If the project defines a language that the task system does not have a
    profile for, use the project's profile as-is.
 
+### Issue Tracker Configuration
+1. If `issue-trackers.md` exists in the project config directory, use it
+   (full replacement).
+2. Otherwise, use `defaults/issue-trackers.md` from the task system.
+
 ### Phase Steps
 1. Each phase checks for a matching file in the project config directory at
    `phase-steps/<NN>-<phase-name>.md` (e.g., `phase-steps/08-final-polish.md`).
