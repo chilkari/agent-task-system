@@ -32,17 +32,17 @@ credentials (the config may override the defaults).
 #### Detect Tracker Type
 
 Determine the tracker from the input format:
-- Input matching `<LETTERS>-<NUMBER>` (e.g., `ENG-123`) -- **Linear**
-- Input is a URL containing `linear.app` -- **Linear**
-- Input containing a URL with `/issues/` in the path -- **Gitea**
-- Input matching `<owner>/<repo>#<number>` or `#<number>` -- **Gitea**
+- Input matching `<LETTERS>-<NUMBER>` (e.g., `ENG-123`) → **Linear**
+- Input is a URL containing `linear.app` → **Linear**
+- Input containing a URL with `/issues/` in the path → **Gitea**
+- Input matching `<owner>/<repo>#<number>` or `#<number>` → **Gitea**
 
 #### Fetch from Linear
 
 1. Read the API key from the environment variable specified in the config
    (default: `LINEAR_API_KEY`). If not set, inform the user and offer to
    proceed without issue data.
-2. Parse the identifier into team key and issue number (e.g., `ENG-123` --
+2. Parse the identifier into team key and issue number (e.g., `ENG-123` →
    team key `ENG`, number `123`).
 3. Fetch the issue. Use the env var name from the resolved config (shown
    below as `$<api-key-variable>` -- substitute the actual variable name,
