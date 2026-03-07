@@ -218,6 +218,20 @@ optional -- you can add these at any time."
 Do not create the `phase-steps/` directory during setup. It is created only
 when the user adds their first phase-steps file.
 
+## Step 3c: Mention Issue Tracker Integration (Optional)
+
+Also inform the user:
+
+"If you use Linear or Gitea for issue tracking, you can configure the
+integration by creating an `issue-trackers.md` file in
+`<project-config-dir>/`. This lets the agent fetch issue details when starting
+a new task. API credentials are read from environment variables
+(`LINEAR_API_KEY`, `GITEA_URL`, `GITEA_API_TOKEN` by default -- the variable
+names can be overridden in the config file). See
+`defaults/issue-trackers.md` in the task system for the full format."
+
+This is informational only -- do not create the file during setup.
+
 ## Step 4: Create Tasks Directory
 
 If artifact tracking is `committed`, create the tasks directory with a
