@@ -80,7 +80,9 @@ Before making any code changes, verify the codebase is in a clean state:
 
    **If the user declines:** Continue on the current branch.
 
-   If the branch is not `main` or `master`, skip this check silently.
+   If the branch is not `main` or `master`, skip this check silently. If
+   `git branch --show-current` returns an empty string, the repository is in
+   a detached HEAD state — skip the branch check silently.
 
 3. **Existing tests**: Run the test command from project commands. If tests
    fail, stop and report. These are pre-existing failures that must be resolved

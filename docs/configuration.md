@@ -20,6 +20,9 @@ tasks/
 ## Artifact Tracking
 <!-- "committed" or "excluded" -->
 committed
+
+## Branch Prefix
+<!-- Optional: a namespace prefix for suggested branch names, e.g., jdw -->
 ```
 
 - **Tasks Directory**: Where task output is stored.
