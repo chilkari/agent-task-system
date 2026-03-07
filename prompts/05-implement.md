@@ -105,6 +105,10 @@ If `05-implementation.md` does not already exist, create it:
 ## Rollback Point
 **Task start**: <commit SHA>
 
+## Branch
+**Working branch**: <branch name>
+**Created new branch**: <yes | no (continued on <branch>)>
+
 ## Steps
 
 ### Step 1: <description from plan>
