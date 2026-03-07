@@ -50,11 +50,11 @@ When you say **"new task"**, the agent walks through 9 phases:
 
 | # | Phase | What Happens |
 |---|-------|-------------|
-| 1 | **Define** | Capture the problem, acceptance criteria, and complexity |
+| 1 | **Define** | Capture the problem, acceptance criteria, and complexity. Optionally pull context from a Linear or Gitea issue. |
 | 2 | **Research** | Explore the codebase for context (skipped for small tasks) |
 | 3 | **Plan** | Write a detailed implementation plan |
 | 4 | **Review** | You and the agent refine the plan until you approve it |
-| 5 | **Implement** | Execute the plan step by step with commits |
+| 5 | **Implement** | Branch preflight check (suggests a feature branch if on main/master), then execute the plan step by step with commits |
 | 6 | **Code Review** | The agent critically reviews its own changes |
 | 7 | **Review Response** | Fix issues, discuss suggestions with you |
 | 8 | **Polish** | Lint, format, remove AI artifacts, final tests |
@@ -128,15 +128,46 @@ In each project, setup creates a **project config directory** (default:
 
 | File | Purpose |
 |------|---------|
-| `config.md` | Tasks directory path and artifact tracking mode |
+| `config.md` | Tasks directory path, artifact tracking mode, and optional branch prefix |
 | `coding-guidelines.md` | Project-specific coding rules (appended to defaults) |
 | `commit-message-format.md` | Your commit message convention |
 | `project-commands.md` | Commands for build, test, lint, format |
+| `issue-trackers.md` | Issue tracker integration (Linear, Gitea) — env var names and settings |
 | `phase-steps/<phase>.md` | Additional steps injected into specific phases (optional) |
 
 It also creates a **tasks directory** (default: `tasks/`) where each task gets
 its own subdirectory with definition, plan, implementation tracking, review
 documents, and a final summary.
+
+## Issue Tracker Integration
+
+When starting a new task, the agent asks if there is an issue ticket. You can
+provide a **Linear issue identifier** (e.g., `ENG-123`) or a **Gitea issue
+URL** (e.g., `https://gitea.example.com/owner/repo/issues/42`). The agent
+fetches the issue title, description, labels, and comments via the tracker's
+API, then uses that context to pre-fill the task definition.
+
+If you don't have an issue, just say "no" and the agent proceeds as usual.
+
+API credentials are stored in environment variables (not in config files).
+The `issue-trackers.md` config file only controls which env var names to use
+and non-secret settings like the Gitea base URL. See
+[docs/configuration.md](docs/configuration.md) for details.
+
+## Branch Preflight Check
+
+At the start of the implementation phase, the agent checks if you're on
+`main` or `master`. If so, it suggests creating a feature branch before
+making changes. The suggested branch name is built from the task name and,
+optionally, the issue identifier (e.g., `ENG-123-add-verbose-flag` or
+`1-add-verbose-flag`).
+
+You can configure an optional **branch prefix** in `config.md` (e.g., your
+initials) so branch names are namespaced (e.g., `jdw/ENG-123-add-verbose-flag`).
+
+You can accept the suggestion, provide your own branch name, or decline and
+stay on the current branch. If you're already on a feature branch, the check
+is skipped silently.
 
 ## Commands
 
@@ -156,13 +187,16 @@ commands from a skill.
 
 ```
 You:    "/task New task"
-Agent:  "What would you like to accomplish?"
-You:    "Add a --verbose flag to the deploy script"
+Agent:  "Is there an issue ticket for this task?"
+You:    "ENG-456"
+Agent:  [Fetches issue from Linear, pre-fills context]
 Agent:  [Asks clarifying questions, writes definition, assesses as "small"]
 Agent:  [Skips research, writes implementation plan]
 Agent:  "Here's the plan. Please review..."
 You:    "Looks good, proceed"
-Agent:  [Implements step by step, committing after each]
+Agent:  "You're on main. I suggest creating branch ENG-456-add-verbose-flag."
+You:    "Go ahead"
+Agent:  [Creates branch, implements step by step, committing after each]
 Agent:  [Reviews its own code, finds 1 issue and 2 suggestions]
 Agent:  [Fixes the issue, you accept 1 suggestion, reject 1]
 Agent:  [Runs lint, format, final tests]
@@ -201,6 +235,7 @@ defaults/                   # Baseline config (applied to all projects)
   coding-guidelines.md      # Default coding rules
   commit-message-format.md  # Default commit format
   project-commands.md       # Command template with placeholders
+  issue-trackers.md         # Default issue tracker config template
 review-profiles/            # Language-specific code review checklists
   typescript.md
   bash.md
