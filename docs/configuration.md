@@ -25,6 +25,25 @@ committed
 - **Tasks Directory**: Where task output is stored.
 - **Artifact Tracking**: Controls whether the task system commits its own
   files to git. See [git-excluded artifacts](git-excluded-artifacts.md).
+- **Branch Prefix** (optional): A namespace prefix for suggested branch names
+  during the implementation phase's branch preflight check. When the agent
+  detects that the user is on `main` or `master`, it suggests a feature branch
+  name. If a branch prefix is configured, it is prepended with a `/` separator
+  (e.g., `jdw/1-my-task`). If omitted, no prefix is used.
+
+**Example with branch prefix:**
+```markdown
+# Task System Configuration
+
+## Tasks Directory
+tasks/
+
+## Artifact Tracking
+committed
+
+## Branch Prefix
+jdw
+```
 
 ## `coding-guidelines.md`
 
