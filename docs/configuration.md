@@ -131,6 +131,66 @@ mypy .
 
 Only include commands that apply to your project.
 
+## `issue-trackers.md`
+
+Issue tracker integration configuration. This **replaces** the task system
+default template entirely. When starting a new task, the agent asks if there
+is an issue ticket (Linear or Gitea) and uses this file to determine
+credential environment variable names and default settings.
+
+API credentials (API keys, tokens) should be stored in environment variables,
+not in this file. This file only configures which environment variable names
+to use and non-secret settings like the Gitea base URL and default repository.
+
+**Default environment variable names** (used if not overridden):
+- `LINEAR_API_KEY` -- Linear personal API key
+- `GITEA_URL` -- Gitea instance base URL
+- `GITEA_API_TOKEN` -- Gitea personal access token
+
+**Example — Linear only:**
+```markdown
+# Issue Tracker Configuration
+
+## Environment Variable Names
+
+### Linear
+- **API Key Variable**: LINEAR_API_KEY
+```
+
+**Example — Gitea with custom env var names:**
+```markdown
+# Issue Tracker Configuration
+
+## Environment Variable Names
+
+### Gitea
+- **URL Variable**: MY_GITEA_URL
+- **API Token Variable**: MY_GITEA_TOKEN
+
+## Gitea Settings
+- **Default Repo**: myorg/myproject
+```
+
+**Example — Both trackers with overrides:**
+```markdown
+# Issue Tracker Configuration
+
+## Environment Variable Names
+
+### Linear
+- **API Key Variable**: ACME_LINEAR_KEY
+
+### Gitea
+- **URL Variable**: ACME_GITEA_URL
+- **API Token Variable**: ACME_GITEA_TOKEN
+
+## Gitea Settings
+- **Default Repo**: acme/backend
+```
+
+The **Default Repo** setting allows users to reference Gitea issues with just
+`#42` instead of `owner/repo#42`.
+
 ## `review-profiles/`
 
 Language-specific review checklist additions. Files here are **appended** to
@@ -218,5 +278,6 @@ If any package exceeds its size budget, investigate and fix before proceeding.
 | `coding-guidelines.md` | Append | Project rules added to defaults |
 | `commit-message-format.md` | Replace | Project format overrides default |
 | `project-commands.md` | Replace | Project commands override template |
+| `issue-trackers.md` | Replace | Project tracker config overrides default |
 | `review-profiles/<lang>.md` | Append | Project checks added to defaults |
 | `phase-steps/<phase>.md` | Append | Project steps added to phase |
