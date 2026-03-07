@@ -157,6 +157,33 @@ Write `01-definition.md` in the task directory with the following sections:
 ```markdown
 # Task: <descriptive title>
 
+<!-- Include the Source Issue section only if an issue was fetched. Omit it
+     entirely if the user did not provide an issue ticket. -->
+
+## Source Issue
+
+- **Tracker**: <Linear | Gitea>
+- **ID**: <identifier, e.g., ENG-123 or owner/repo#42>
+- **URL**: <direct link to the issue>
+- **Title**: <original issue title>
+- **Status**: <issue status/state>
+- **Labels**: <comma-separated labels, or "none">
+
+### Description
+
+<Original issue description/body, preserved verbatim>
+
+### Comments
+
+<!-- Include up to 20 most recent comments. If more than 20 exist, note that
+     earlier comments were omitted. Omit this subsection if there are no
+     comments. -->
+
+#### <author> (<date>)
+<comment body>
+
+<!-- End of Source Issue section -->
+
 ## Problem Statement
 
 <What needs to change and why. Be specific about the current state and the
