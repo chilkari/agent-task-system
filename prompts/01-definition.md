@@ -33,6 +33,7 @@ credentials (the config may override the defaults).
 
 Determine the tracker from the input format:
 - Input matching `<LETTERS>-<NUMBER>` (e.g., `ENG-123`) → **Linear**
+- Input is a URL containing `linear.app` → **Linear**
 - Input containing a URL with `/issues/` in the path → **Gitea**
 - Input matching `<owner>/<repo>#<number>` or `#<number>` → **Gitea**
 
@@ -43,12 +44,14 @@ Determine the tracker from the input format:
    proceed without issue data.
 2. Parse the identifier into team key and issue number (e.g., `ENG-123` →
    team key `ENG`, number `123`).
-3. Fetch the issue:
+3. Fetch the issue. Use the env var name from the resolved config (shown
+   below as `$<api-key-variable>` -- substitute the actual variable name,
+   which defaults to `LINEAR_API_KEY`):
 
 ```bash
 curl -s -X POST https://api.linear.app/graphql \
   -H "Content-Type: application/json" \
-  -H "Authorization: $LINEAR_API_KEY" \
+  -H "Authorization: $<api-key-variable>" \
   -d '{
     "query": "query($teamKey: String!, $issueNumber: Float!) { issues(filter: { team: { key: { eq: $teamKey } }, number: { eq: $issueNumber } }) { nodes { identifier url title description state { name } priority priorityLabel labels { nodes { name } } assignee { name } comments { nodes { body user { name } createdAt } } } } }",
     "variables": { "teamKey": "<TEAM>", "issueNumber": <NUMBER> }
@@ -69,18 +72,21 @@ curl -s -X POST https://api.linear.app/graphql \
    - From `owner/repo#N`: parse directly.
    - From `#N`: use the default repo from the config. If no default repo is
      configured, ask the user for the owner/repo.
-3. Fetch the issue:
+3. Fetch the issue. Use the env var names from the resolved config (shown
+   below as `$<url-variable>` and `$<token-variable>` -- substitute the
+   actual variable names, which default to `GITEA_URL` and
+   `GITEA_API_TOKEN`):
 
 ```bash
-curl -s -H "Authorization: token $GITEA_API_TOKEN" \
-  "$GITEA_URL/api/v1/repos/<owner>/<repo>/issues/<number>"
+curl -s -H "Authorization: token $<token-variable>" \
+  "$<url-variable>/api/v1/repos/<owner>/<repo>/issues/<number>"
 ```
 
 4. Fetch comments:
 
 ```bash
-curl -s -H "Authorization: token $GITEA_API_TOKEN" \
-  "$GITEA_URL/api/v1/repos/<owner>/<repo>/issues/<number>/comments"
+curl -s -H "Authorization: token $<token-variable>" \
+  "$<url-variable>/api/v1/repos/<owner>/<repo>/issues/<number>/comments"
 ```
 
 5. Extract from the responses: title, body, state, labels, assignee, and

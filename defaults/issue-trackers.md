@@ -15,15 +15,15 @@ with existing environment variables in your project.
 
 ### Linear
 
-- **API Key Variable**: `LINEAR_API_KEY`
+- **API Key Variable**: LINEAR_API_KEY
 
 The value should be a Linear personal API key. Generate one at
 https://linear.app/settings/api (select "Personal API keys").
 
 ### Gitea
 
-- **URL Variable**: `GITEA_URL`
-- **API Token Variable**: `GITEA_API_TOKEN`
+- **URL Variable**: GITEA_URL
+- **API Token Variable**: GITEA_API_TOKEN
 
 The URL should be the base URL of your Gitea instance (e.g.,
 `https://gitea.example.com`). Do not include a trailing slash or API path.
