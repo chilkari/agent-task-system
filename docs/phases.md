@@ -21,11 +21,16 @@ Define    Research   Plan       Review    Implement  Code       Review    Polish
 
 ## Phase 1: Definition
 
-**Reads**: nothing (starting fresh)
+**Reads**: `issue-trackers.md` (resolved via file resolution), issue tracker
+API (if an issue ticket is provided)
 **Writes**: `01-definition.md`, `task-state.md`
 **Interaction**: Interactive
 
-The agent asks you to describe the task, then drafts a definition with:
+The agent first asks if there is an issue ticket to work from (Linear or
+Gitea). If provided, it fetches the issue details (title, description, labels,
+status, comments) and uses them to seed the task definition. The agent then
+drafts a definition with:
+- Source issue (if fetched)
 - Problem statement
 - Acceptance criteria (with testing expectations)
 - Scope (in/out)
@@ -36,6 +41,9 @@ The agent asks you to describe the task, then drafts a definition with:
   implementations.
 - If unsure about complexity, err on the side of larger. It is easier to skip
   research than to discover you needed it mid-implementation.
+- If you have a Linear or Gitea issue, provide it at the start to save time.
+  The agent will pull in the description and comments so you do not have to
+  re-describe the problem.
 
 ## Phase 2: Research
 
