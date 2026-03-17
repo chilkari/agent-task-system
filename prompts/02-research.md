@@ -54,8 +54,15 @@ proposal as:
    - **Large**: Broad. Map out architecture, trace data flows, examine testing
      patterns, and understand conventions across the codebase.
 
-Ask the user: "Does this cover everything, or are there areas I should also
-explore?" Wait for the user to confirm or adjust the plan before proceeding.
+If you have **open questions** about the task that would materially change
+your research direction (ambiguous scope, unclear constraints, conflicting
+signals from the definition), stop and ask the user before proceeding. Present
+the specific questions alongside your research plan so the user can answer
+them and adjust the plan in one pass.
+
+Otherwise, briefly present the plan and **proceed with research immediately**
+without waiting for confirmation. The user can interrupt if they want to
+redirect.
 
 ### Explore the Codebase
 
