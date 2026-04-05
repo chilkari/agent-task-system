@@ -158,6 +158,12 @@ Explain your reasoning for the complexity assessment. The user may override it.
 Create the task directory at `<tasks-dir>/<task-slug>/` where `<task-slug>` is
 a short, lowercase, hyphenated name derived from the task description.
 
+If a source issue was fetched, prefix the slug with the issue reference:
+- For Gitea issues: `issue-<number>-<slug>` (e.g., `issue-7-mariadb-backup`)
+- For Linear issues: `<identifier>-<slug>` (e.g., `ENG-123-mariadb-backup`)
+
+If no issue was provided, use the slug alone (e.g., `mariadb-backup`).
+
 Write `01-definition.md` in the task directory with the following sections:
 
 ```markdown
